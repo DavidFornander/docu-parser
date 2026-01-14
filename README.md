@@ -5,14 +5,17 @@ An autonomous, local-first AI pipeline designed to achieve 100% information cove
 ## 🚀 The "Zero-Loss" Philosophy
 Summarization is lossy. In high-stakes learning (medical, engineering, law), omission is failure. This engine:
 1. **Decomposes** text into atomic Question-Answer pairs.
-2. **Audits** coverage by attempting to reconstruct the source text from the generated cards.
-3. **Repairs** gaps automatically via a "Chain of Verification" loop.
+2. **Sees Diagrams**: Uses a Vision Language Model (VLM) to describe charts, labels, and arrows, injecting them as text context.
+3. **Audits** coverage by attempting to reconstruct the source text from the generated cards.
+4. **Verifies Factuality**: Uses a Cross-Encoder (NLI) to ensure every flashcard is strictly supported by the source material.
+5. **Repairs** gaps automatically via a "Chain of Verification" loop.
 
 ## 🛠 Architecture
-- **Inference**: [vLLM](https://github.com/vllm-project/vllm) for high-throughput local LLM execution.
+- **Inference**: [vLLM](https://github.com/vllm-project/vllm) for high-throughput local LLM execution (Llama-3-8B).
+- **Vision**: [Moondream2](https://github.com/vikhyat/moondream) for lightweight diagram analysis.
 - **Parsing**: [Marker](https://github.com/vikas-kumar/marker-pdf) for deep-learning-based PDF to Markdown conversion.
 - **State**: SQLite-based job queue for persistent, crash-resilient processing.
-- **Verification**: Sentence-Transformers for semantic coverage auditing.
+- **Verification**: Sentence-Transformers for semantic coverage auditing and Cross-Encoders for fact-checking.
 - **Export**: Anki-compatible `.apkg` generation.
 
 ## 📦 Environment Setup (NixOS)

@@ -1,0 +1,13 @@
+warning: Git tree '/home/david/dev/twin/docu-parser' is dirty
+🚀 Welcome to the Zero-Loss Engine Dev Shell!
+🔧 Setting up Python environment...
+✅ Ready! Run 'pip install -r requirements.txt' to install deps.
+INFO:     Started server process [113714]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:42000 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [113714]

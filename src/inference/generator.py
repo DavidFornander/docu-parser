@@ -10,7 +10,7 @@ logger = setup_logger("FlashcardGenerator")
 
 class FlashcardGenerator:
     def __init__(self, model_name="Qwen/Qwen2.5-0.5B-Instruct", gpu_memory_utilization=0.7):
-        # Previous model: meta-llama/Meta-Llama-3-8B-Instruct
+        # Previous high-quality model: casperhansen/llama-3-8b-instruct-awq
         """
         Initializes the vLLM engine.
         model_name: Path or HuggingFace ID of the model.

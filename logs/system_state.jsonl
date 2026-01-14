@@ -224,3 +224,115 @@
 {"timestamp": "2026-01-14T23:42:59.026996", "status": "Idle..."}
 {"timestamp": "2026-01-14T23:43:04.027810", "status": "Idle..."}
 {"timestamp": "2026-01-14T23:43:09.028625", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:57:35.139095", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:57:40.143079", "status": "Checking environment..."}
+{"timestamp": "2026-01-14T23:57:45.143881", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-14T23:59:04.969448", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:59:09.973441", "status": "Checking environment..."}
+{"timestamp": "2026-01-14T23:59:14.974304", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-14T23:59:19.975099", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-14T23:59:24.975919", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-14T23:59:29.977472", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-14T23:59:34.978287", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-14T23:59:39.979182", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-14T23:59:44.980274", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-14T23:59:49.981124", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-14T23:59:54.981966", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-14T23:59:59.983863", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:04.984625", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:09.985399", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:14.986241", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:19.987051", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:24.987843", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:29.988699", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:34.989935", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:39.990693", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:44.991461", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:49.992280", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:54.993022", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:00:59.993793", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:01:04.994571", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:01:09.995359", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:01:14.996201", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:01:19.996985", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:01:24.997764", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:01:29.998540", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:01:34.999355", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:01:40.000168", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:01:45.000969", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:01:50.002518", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:01:55.003299", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:02:00.004109", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:02:05.004902", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:02:10.005701", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:02:15.006495", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:02:20.007303", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:02:25.008095", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:02:30.008903", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:02:35.010630", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:02:40.011414", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:02:45.012216", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:02:50.013466", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-15T00:03:54.632359", "status": "Initializing..."}
+{"timestamp": "2026-01-15T00:03:59.636434", "status": "Checking environment..."}
+{"timestamp": "2026-01-15T00:04:06.782291", "status": "Initializing..."}
+{"timestamp": "2026-01-15T00:04:11.786129", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:04:16.817942", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:04:21.842950", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:04:26.843942", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:04:31.844787", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:04:36.845668", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:04:41.846552", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:04:46.847390", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:04:51.848213", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:04:56.849077", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:05:01.849938", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:05:06.850793", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:05:11.851575", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:05:16.852477", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:05:21.853344", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:05:26.854244", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:05:31.855061", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:05:36.855928", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:05:41.856784", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:05:46.857680", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:05:51.859472", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:05:56.860335", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:06:01.861160", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:06:06.862012", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:06:11.862930", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:06:16.863925", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:06:21.864856", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:06:26.865715", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:06:31.866578", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:06:36.867434", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:06:41.868315", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:06:46.869153", "status": "Extraction: ffe6950c..."}
+{"timestamp": "2026-01-15T00:07:48.914747", "status": "Initializing..."}
+{"timestamp": "2026-01-15T00:07:53.918729", "status": "Checking environment..."}
+{"timestamp": "2026-01-15T00:08:01.491310", "status": "Initializing..."}
+{"timestamp": "2026-01-15T00:08:06.495239", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:08:11.496196", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:08:16.497583", "status": "Extraction: 329d4e0d..."}
+{"timestamp": "2026-01-15T00:08:21.498367", "status": "Idle..."}
+{"timestamp": "2026-01-15T00:08:26.499207", "status": "Idle..."}
+{"timestamp": "2026-01-15T00:08:31.499967", "status": "Idle..."}
+{"timestamp": "2026-01-15T00:33:14.728169", "status": "Initializing..."}
+{"timestamp": "2026-01-15T00:33:19.732095", "status": "Checking environment..."}
+{"timestamp": "2026-01-15T00:33:24.732983", "status": "Ingesting PDF: 0A1.pdf"}
+{"timestamp": "2026-01-15T00:34:30.203619", "status": "Initializing..."}
+{"timestamp": "2026-01-15T00:34:35.230644", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:34:40.231525", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:34:45.232342", "status": "Extraction: 7cd682e0..."}
+{"timestamp": "2026-01-15T00:34:50.233081", "status": "Idle..."}
+{"timestamp": "2026-01-15T00:34:55.233833", "status": "Idle..."}
+{"timestamp": "2026-01-15T00:35:00.234845", "status": "Idle..."}
+{"timestamp": "2026-01-15T00:35:49.818480", "status": "Initializing..."}
+{"timestamp": "2026-01-15T00:35:54.874097", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:35:59.874963", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-15T00:36:04.875755", "status": "Idle..."}
+{"timestamp": "2026-01-15T00:36:09.876558", "status": "Idle..."}
+{"timestamp": "2026-01-15T00:36:14.877296", "status": "Idle..."}
+{"timestamp": "2026-01-15T00:44:49.315723", "status": "Initializing..."}
+{"timestamp": "2026-01-15T00:45:25.436042", "status": "Initializing..."}
+{"timestamp": "2026-01-15T00:45:37.012066", "status": "Initializing..."}

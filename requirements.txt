@@ -12,3 +12,8 @@ openai
 auto-gptq
 reportlab
 rich
+einops
+timm
+fastapi
+uvicorn
+jinja2

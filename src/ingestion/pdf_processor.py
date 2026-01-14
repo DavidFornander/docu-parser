@@ -3,6 +3,7 @@ import subprocess
 import logging
 from pathlib import Path
 from utils.logger import setup_logger
+from inference.vision import ImageDescriber
 
 logger = setup_logger("PDFProcessor")
 
@@ -15,6 +16,44 @@ class PDFProcessor:
         self.input_dir.mkdir(exist_ok=True)
         self.output_dir.mkdir(exist_ok=True)
         self.assets_dir.mkdir(exist_ok=True)
+
+    def enrich_with_visuals(self, md_file, assets_folder):
+        """
+        Scans assets folder for images, describes them, and injects into MD.
+        """
+        if not assets_folder.exists():
+            logger.info(f"No assets folder found at {assets_folder}, skipping visual enrichment.")
+            return
+
+        image_files = list(assets_folder.glob("*.png")) + list(assets_folder.glob("*.jpg")) + list(assets_folder.glob("*.jpeg"))
+        if not image_files:
+            logger.info(f"No images found in {assets_folder}.")
+            return
+
+        logger.info(f"Enriching with {len(image_files)} images using VLM...")
+        
+        try:
+            # Load VLM temporarily
+            describer = ImageDescriber()
+            
+            visual_context = "\n\n## Visual Context (Extracted Diagrams)\n"
+            for img_path in image_files:
+                logger.info(f"Describing image: {img_path.name}")
+                description = describer.describe(img_path)
+                visual_context += f"\n### Image: {img_path.name}\n{description}\n"
+            
+            with open(md_file, "a", encoding="utf-8") as f:
+                f.write("\n<visual_context>\n" + visual_context + "\n</visual_context>\n")
+            
+            logger.info("Visual enrichment complete.")
+            
+            # Explicitly free memory if possible (though process exit handles it)
+            del describer
+            import torch
+            torch.cuda.empty_cache()
+            
+        except Exception as e:
+            logger.error(f"Visual enrichment failed: {e}")
 
     def process_pdf(self, pdf_path):
         """
@@ -81,9 +120,15 @@ class PDFProcessor:
             else:
                 # Some versions might just put it in the output dir
                 potential_md = self.output_dir / f"{pdf_path.stem}.md"
-                if potential_md.exists():
-                    return potential_md
+            if potential_md.exists():
+                md_file = potential_md
+            else:
                 raise FileNotFoundError(f"Markdown file not found after processing {pdf_path}")
+
+            # NEW: Visual Extraction Sub-system (Plan 3.2)
+            self.enrich_with_visuals(md_file, self.output_dir / pdf_path.stem / "assets")
+            
+            return md_file
 
         except subprocess.CalledProcessError as e:
             logger.error(f"Marker failed for {pdf_path}: {e}")
