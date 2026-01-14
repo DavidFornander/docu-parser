@@ -143,3 +143,84 @@
 {"timestamp": "2026-01-14T23:26:52.798538", "status": "Extraction: 261b8840..."}
 {"timestamp": "2026-01-14T23:26:57.799295", "status": "Extraction: 261b8840..."}
 {"timestamp": "2026-01-14T23:27:02.800025", "status": "Extraction: 261b8840..."}
+{"timestamp": "2026-01-14T23:30:33.766772", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:30:38.770057", "status": "Checking environment..."}
+{"timestamp": "2026-01-14T23:30:54.701156", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:30:59.705124", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-14T23:31:04.706092", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-14T23:31:09.706880", "status": "Extraction: 71c1ca18..."}
+{"timestamp": "2026-01-14T23:31:14.707754", "status": "Extraction: 71c1ca18..."}
+{"timestamp": "2026-01-14T23:31:19.708480", "status": "Extraction: 71c1ca18..."}
+{"timestamp": "2026-01-14T23:31:24.709193", "status": "Repairing: 71c1ca18..."}
+{"timestamp": "2026-01-14T23:31:29.709951", "status": "Repairing: 71c1ca18..."}
+{"timestamp": "2026-01-14T23:31:34.710711", "status": "Repairing: 71c1ca18..."}
+{"timestamp": "2026-01-14T23:31:39.711478", "status": "Repairing: 71c1ca18..."}
+{"timestamp": "2026-01-14T23:31:44.712231", "status": "Extraction: 297ffa73..."}
+{"timestamp": "2026-01-14T23:31:49.713013", "status": "Extraction: 297ffa73..."}
+{"timestamp": "2026-01-14T23:31:54.713761", "status": "Extraction: 297ffa73..."}
+{"timestamp": "2026-01-14T23:31:59.714512", "status": "Extraction: 297ffa73..."}
+{"timestamp": "2026-01-14T23:32:04.715321", "status": "Extraction: 0422e02b..."}
+{"timestamp": "2026-01-14T23:32:09.716146", "status": "Repairing: 0422e02b..."}
+{"timestamp": "2026-01-14T23:32:14.716877", "status": "Repairing: 0422e02b..."}
+{"timestamp": "2026-01-14T23:32:19.717628", "status": "Extraction: c71bd6d6..."}
+{"timestamp": "2026-01-14T23:32:24.718372", "status": "Extraction: c71bd6d6..."}
+{"timestamp": "2026-01-14T23:32:29.719091", "status": "Extraction: c71bd6d6..."}
+{"timestamp": "2026-01-14T23:32:34.719829", "status": "Repairing: c71bd6d6..."}
+{"timestamp": "2026-01-14T23:32:39.720569", "status": "Repairing: c71bd6d6..."}
+{"timestamp": "2026-01-14T23:32:44.721353", "status": "Repairing: c71bd6d6..."}
+{"timestamp": "2026-01-14T23:32:49.722095", "status": "Repairing: c71bd6d6..."}
+{"timestamp": "2026-01-14T23:32:54.722821", "status": "Extraction: 95723d21..."}
+{"timestamp": "2026-01-14T23:32:59.723563", "status": "Extraction: 95723d21..."}
+{"timestamp": "2026-01-14T23:33:04.724401", "status": "Extraction: 95723d21..."}
+{"timestamp": "2026-01-14T23:33:09.725311", "status": "Repairing: 95723d21..."}
+{"timestamp": "2026-01-14T23:33:14.726068", "status": "Extraction: debdb93b..."}
+{"timestamp": "2026-01-14T23:33:19.726808", "status": "Extraction: debdb93b..."}
+{"timestamp": "2026-01-14T23:33:24.727566", "status": "Extraction: debdb93b..."}
+{"timestamp": "2026-01-14T23:33:29.728309", "status": "Repairing: debdb93b..."}
+{"timestamp": "2026-01-14T23:33:34.729008", "status": "Extraction: 42881823..."}
+{"timestamp": "2026-01-14T23:33:39.729772", "status": "Repairing: 42881823..."}
+{"timestamp": "2026-01-14T23:33:44.730812", "status": "Extraction: c3437e2d..."}
+{"timestamp": "2026-01-14T23:33:49.731573", "status": "Extraction: c3437e2d..."}
+{"timestamp": "2026-01-14T23:33:54.732335", "status": "Extraction: c3437e2d..."}
+{"timestamp": "2026-01-14T23:33:59.733065", "status": "Repairing: c3437e2d..."}
+{"timestamp": "2026-01-14T23:34:04.733831", "status": "Repairing: c3437e2d..."}
+{"timestamp": "2026-01-14T23:34:09.734560", "status": "Repairing: c3437e2d..."}
+{"timestamp": "2026-01-14T23:34:14.735250", "status": "Repairing: c3437e2d..."}
+{"timestamp": "2026-01-14T23:34:19.736869", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:34:24.737673", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:34:29.739212", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:36:40.467853", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:36:45.470799", "status": "Checking environment..."}
+{"timestamp": "2026-01-14T23:36:54.222735", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:36:59.228507", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-14T23:37:04.229448", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-14T23:37:09.230191", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:37:14.231066", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:37:19.231864", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:37:38.167587", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:37:43.171122", "status": "Checking environment..."}
+{"timestamp": "2026-01-14T23:37:51.923271", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:37:56.927202", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-14T23:38:01.928126", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-14T23:38:06.929207", "status": "Repairing: a0f7b68d..."}
+{"timestamp": "2026-01-14T23:38:11.929959", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:38:16.930797", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:38:21.931625", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:41:13.744104", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:41:18.747024", "status": "Checking environment..."}
+{"timestamp": "2026-01-14T23:41:23.747832", "status": "Ingesting PDF: newton.pdf"}
+{"timestamp": "2026-01-14T23:41:33.938533", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:41:38.942519", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-14T23:41:43.943409", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-14T23:41:48.944245", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:41:53.945070", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:41:58.945916", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:42:25.358938", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:42:30.361848", "status": "Checking environment..."}
+{"timestamp": "2026-01-14T23:42:39.010410", "status": "Initializing..."}
+{"timestamp": "2026-01-14T23:42:44.024492", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-14T23:42:49.025449", "status": "Initializing Engine..."}
+{"timestamp": "2026-01-14T23:42:54.026234", "status": "Repairing: 88ccfd42..."}
+{"timestamp": "2026-01-14T23:42:59.026996", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:43:04.027810", "status": "Idle..."}
+{"timestamp": "2026-01-14T23:43:09.028625", "status": "Idle..."}

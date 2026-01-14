@@ -37,7 +37,7 @@ class CoverageAuditor:
         source_embeddings = self.model.encode(source_sentences, convert_to_tensor=True)
         
         # Encode flashcard answers (the 'back' of the card)
-        card_answers = [card['back'] for card in flashcards]
+        card_answers = [card.get('back', '') for card in flashcards]
         if not card_answers:
             return source_sentences, 0.0
             

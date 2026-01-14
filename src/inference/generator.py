@@ -48,11 +48,11 @@ class FlashcardGenerator:
         return self.parse_json_output(generated_text)
 
     def build_prompt(self, text):
-        # Combining system and user prompt for Llama-3 chat format
-        # This format might change slightly depending on the model used.
-        return f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n{SYSTEM_PROMPT}<|eot_id|>" \
-               f"<|start_header_id|>user<|end_header_id|>\n\n{EXTRACTION_PROMPT_TEMPLATE.format(text=text)}<|eot_id|>" \
-               f"<|start_header_id|>assistant<|end_header_id|>\n\n"
+        # Generic Chat Format (works reasonably well for Qwen, Mistral, Llama)
+        # For production, consider using the model's specific tokenizer.apply_chat_template()
+        return f"System: {SYSTEM_PROMPT}\n\n" \
+               f"User: {EXTRACTION_PROMPT_TEMPLATE.format(text=text)}\n\n" \
+               f"Assistant:\n"
 
     def parse_json_output(self, text):
         """

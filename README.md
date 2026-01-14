@@ -31,25 +31,35 @@ This project is optimized for NixOS using **Nix Flakes** to provide a patched en
 
 ## 🏃 Usage Flow
 
-### 1. Ingestion (Phase 1)
+### Quick Start (Recommended)
+We provide a unified script to run the entire pipeline (Ingestion -> Processing -> Export):
+
+```bash
+chmod +x run.sh
+./run.sh
+```
+
+### Manual Execution
+
+#### 1. Ingestion (Phase 1)
 Place your PDFs in the `input/` folder.
 ```bash
 export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-python src/main.py
+python3 src/main.py
 ```
 This converts PDFs to Markdown, performs semantic chunking, and populates the SQLite queue.
 
-### 2. Processing (Phase 2 & 3)
+#### 2. Processing (Phase 2 & 3)
 Run the worker to generate and verify flashcards.
 ```bash
-python src/worker.py
+python3 src/worker.py
 ```
-*Note: Uses `Qwen/Qwen2.5-0.5B-Instruct` by default for high speed. Llama-3-8B is available in `worker.py` for higher quality.*
+*Note: Uses `Qwen/Qwen2.5-0.5B-Instruct` by default for high speed and low VRAM usage.*
 
-### 3. Export
+#### 3. Export
 Generate your Anki deck.
 ```bash
-python src/utils/exporter.py
+python3 src/utils/exporter.py
 ```
 
 ## 📊 Monitoring
