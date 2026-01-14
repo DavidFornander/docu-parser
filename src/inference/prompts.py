@@ -33,22 +33,21 @@ Output the result as a JSON object with the following schema:
       "type": "concept | definition | formula | list",
       "source_quote": "The exact sentence from the source text that justifies this card"
     }}
-    ]
-  }}
-  """
-  
-  REPAIR_PROMPT_TEMPLATE = """The following specific sentences from the source text were NOT covered in the previous flashcard set:
-  ---
-  {uncovered_text}
-  ---
-  
-  INSTRUCTIONS:
-  Generate new atomic flashcards specifically for these facts.
-  Ensure 100% coverage of the above sentences.
-  
-  Output as JSON:
-  {{
-    "flashcards": [ ... ]
-  }}
-  """
-  
+  ]
+}}
+"""
+
+REPAIR_PROMPT_TEMPLATE = """The following specific sentences from the source text were NOT covered in the previous flashcard set:
+---
+{uncovered_text}
+---
+
+INSTRUCTIONS:
+Generate new atomic flashcards specifically for these facts. 
+Ensure 100% coverage of the above sentences.
+
+Output as JSON:
+{{
+  "flashcards": [ ... ]
+}}
+"""

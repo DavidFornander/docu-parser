@@ -61,6 +61,22 @@ class DBManager:
         finally:
             conn.close()
 
+    def get_pending_count(self):
+        """
+        Returns the number of chunks currently in PENDING state.
+        """
+        conn = self._get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("SELECT COUNT(*) FROM processing_queue WHERE status = 'PENDING'")
+            count = cursor.fetchone()[0]
+            return count
+        except sqlite3.Error as e:
+            print(f"Database error: {e}")
+            return 0
+        finally:
+            conn.close()
+
     def update_chunk_status(self, chunk_id, status, output_json=None, error_log=None, verification_score=None):
         conn = self._get_connection()
         cursor = conn.cursor()

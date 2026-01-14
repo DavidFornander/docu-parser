@@ -2,9 +2,9 @@ import os
 import subprocess
 import logging
 from pathlib import Path
+from utils.logger import setup_logger
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger = setup_logger("PDFProcessor")
 
 class PDFProcessor:
     def __init__(self, input_dir="input", output_dir="output", assets_dir="assets"):
@@ -24,23 +24,56 @@ class PDFProcessor:
         output_subfolder = self.output_dir / pdf_path.stem
         output_subfolder.mkdir(exist_ok=True)
         
+        md_file = output_subfolder / f"{pdf_path.stem}.md"
+        if md_file.exists():
+            logger.info(f"Markdown already exists for {pdf_path}, skipping conversion.")
+            return md_file
+
         logger.info(f"Processing PDF: {pdf_path}")
         
         # Command for marker. Based on standard marker usage:
         # marker_single <pdf_path> --output_dir <output_dir>
         # Note: This assumes marker is installed in the environment.
         try:
+            # Ensure absolute paths
+            abs_pdf_path = pdf_path.resolve()
+            abs_output_dir = self.output_dir.resolve()
+            
             command = [
                 "marker_single", 
-                str(pdf_path), 
-                "--output_dir", str(self.output_dir),
-                "--batch_multiplier", "2"
+                str(abs_pdf_path), 
+                "--output_dir", str(abs_output_dir)
             ]
             
-            # We use subprocess to call marker CLI
-            result = subprocess.run(command, capture_output=True, text=True, check=True)
-            logger.info(f"Marker output: {result.stdout}")
+            # Use Popen to stream output and avoid appearing stuck
+            # bufsize=0 and env=os.environ.copy() are CRITICAL for NixOS/Real-time logging
+            process = subprocess.Popen(
+                command, 
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.STDOUT, 
+                text=True,
+                bufsize=1, # Line buffered
+                env=os.environ.copy() 
+            )
             
+            logger.info(f"Started Marker process for [bold cyan]{pdf_path.name}[/] (PID: {process.pid})")
+            
+            # Stream output line by line
+            for line in process.stdout:
+                clean_line = line.strip()
+                if clean_line:
+                    logger.info(f"[dim]Marker:[/] {clean_line}")
+            
+            # Wait for process to complete with timeout
+            try:
+                stdout, stderr = process.communicate(timeout=1200)
+                if process.returncode != 0:
+                    raise subprocess.CalledProcessError(process.returncode, command, output=stdout, stderr=stderr)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                logger.error(f"Marker timed out after 1200 seconds for {pdf_path}")
+                raise
+
             # Marker usually creates a folder with the PDF name and a .md file inside
             md_file = self.output_dir / pdf_path.stem / f"{pdf_path.stem}.md"
             if md_file.exists():
@@ -53,7 +86,7 @@ class PDFProcessor:
                 raise FileNotFoundError(f"Markdown file not found after processing {pdf_path}")
 
         except subprocess.CalledProcessError as e:
-            logger.error(f"Marker failed for {pdf_path}: {e.stderr}")
+            logger.error(f"Marker failed for {pdf_path}: {e}")
             raise
         except FileNotFoundError:
             logger.error("marker_single command not found. Ensure marker-pdf is installed.")

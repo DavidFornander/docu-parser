@@ -15,17 +15,18 @@ Summarization is lossy. In high-stakes learning (medical, engineering, law), omi
 - **Verification**: Sentence-Transformers for semantic coverage auditing.
 - **Export**: Anki-compatible `.apkg` generation.
 
-## 📦 Prerequisites (NixOS Setup)
-This project is optimized for NixOS using **Distrobox** to manage complex GPU/Python dependencies.
+## 📦 Environment Setup (NixOS)
+This project is optimized for NixOS using **Nix Flakes** to provide a patched environment where standard Python AI wheels can run natively.
 
-1. **Enter the environment**:
+1. **Enter the Development Shell**:
    ```bash
-   distrobox enter ai-lab
+   nix develop
    ```
-2. **Dependencies**:
-   Inside the container, ensure the following are installed:
+   *This automatically creates/activates a `.venv` and patches library paths.*
+
+2. **Install Dependencies** (First time only):
    ```bash
-   pip install vllm marker-pdf sentence-transformers genanki torch
+   pip install -r requirements.txt
    ```
 
 ## 🏃 Usage Flow
@@ -34,27 +35,38 @@ This project is optimized for NixOS using **Distrobox** to manage complex GPU/Py
 Place your PDFs in the `input/` folder.
 ```bash
 export PYTHONPATH=$PYTHONPATH:$(pwd)/src
-python3 src/main.py
+python src/main.py
 ```
 This converts PDFs to Markdown, performs semantic chunking, and populates the SQLite queue.
 
 ### 2. Processing (Phase 2 & 3)
 Run the worker to generate and verify flashcards.
 ```bash
-python3 src/worker.py
+python src/worker.py
 ```
-*Note: Uses `casperhansen/llama-3-8b-instruct-awq` by default for 12GB VRAM compatibility.*
+*Note: Uses `Qwen/Qwen2.5-0.5B-Instruct` by default for high speed. Llama-3-8B is available in `worker.py` for higher quality.*
 
 ### 3. Export
 Generate your Anki deck.
 ```bash
-python3 src/utils/exporter.py
+python src/utils/exporter.py
+```
+
+## 📊 Monitoring
+The system logs its exact state every 5 seconds to:
+- **Terminal**: Direct log output.
+- **File**: `logs/system_state.jsonl` (Structured heartbeat).
+
+To monitor the background heartbeat:
+```bash
+tail -f logs/system_state.jsonl
 ```
 
 ## 📁 Directory Structure
 - `input/`: Raw PDFs.
 - `output/`: Processed Markdown and Anki decks.
 - `assets/`: Extracted diagrams and images.
+- `logs/`: Heartbeat and system state logs.
 - `src/`:
   - `ingestion/`: PDF processing & chunking.
   - `inference/`: vLLM interaction & prompt engineering.

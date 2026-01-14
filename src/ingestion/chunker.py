@@ -2,58 +2,57 @@ import re
 import uuid
 import json
 from pathlib import Path
+import time
+from tqdm import tqdm
 
 class SemanticChunker:
-    def __init__(self, chunk_size=2500, chunk_overlap=300):
+    def __init__(self, chunk_size=2500, chunk_overlap=300, timeout=10):
         """
         Initializes the chunker.
-        chunk_size: Target size of each chunk in characters (approximate to tokens for now).
-        chunk_overlap: Number of characters to overlap between chunks.
+        chunk_size: Target size of each chunk in characters.
+        chunk_overlap: Number of characters to overlap.
+        timeout: Seconds to wait for a chunk to be created before aborting.
         """
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
+        self.timeout = timeout
 
     def chunk_text(self, text, metadata=None):
-        """
-        Splits text into chunks using recursive character splitting logic.
-        Tries to split on paragraphs, then sentences, then spaces.
-        """
-        if metadata is None:
-            metadata = {}
-
+        if metadata is None: metadata = {}
         chunks = []
         start = 0
         text_len = len(text)
+        
+        pbar = tqdm(total=text_len, desc="Chunking Text", unit="chars")
+        last_pos = 0
+        
+        last_activity = time.time()
 
         while start < text_len:
+            # Check timeout
+            if time.time() - last_activity > self.timeout:
+                pbar.close()
+                raise TimeoutError(f"Chunking stalled at position {start}/{text_len}")
+
             # End is start + chunk_size
             end = min(start + self.chunk_size, text_len)
             
-            # If not at the end of the text, try to find a good breaking point
             if end < text_len:
-                # Try to find last paragraph break (\n\n)
                 last_para = text.rfind("\n\n", start, end)
                 if last_para != -1 and last_para > start + (self.chunk_size // 2):
                     end = last_para + 2
                 else:
-                    # Try to find last sentence break (. )
                     last_sent = text.rfind(". ", start, end)
                     if last_sent != -1 and last_sent > start + (self.chunk_size // 2):
                         end = last_sent + 2
                     else:
-                        # Try to find last space
                         last_space = text.rfind(" ", start, end)
                         if last_space != -1 and last_space > start + (self.chunk_size // 2):
                             end = last_space + 1
 
             chunk_content = text[start:end].strip()
-            
-            # Inject metadata as per plan 3.3
             header_context = self._extract_header_context(text, start)
             formatted_metadata = {**metadata, "header_context": header_context}
-            
-            # Prepend metadata to text as per plan 3.3
-            # Metadata Injection: Every chunk is prepended with its hierarchical context
             context_string = f"Context: {header_context}\n\n" if header_context else ""
             final_content = context_string + chunk_content
 
@@ -62,13 +61,27 @@ class SemanticChunker:
                 "content": final_content,
                 "metadata": formatted_metadata
             })
+            
+            # Reset timeout on successful chunk
+            last_activity = time.time()
 
-            # Move start forward, accounting for overlap
+            # If we reached the end of the text, stop
+            if end == text_len:
+                pbar.update(text_len - last_pos)
+                break
+
+            prev_start = start
             start = end - self.chunk_overlap
             if start < 0: start = 0
-            if start >= end: # Prevent infinite loop if overlap >= size
-                start = end
+            if start >= end: start = end
+            
+            advance = start - prev_start
+            if advance > 0:
+                pbar.update(advance)
+                last_pos = start
 
+        pbar.update(text_len - last_pos)
+        pbar.close()
         return chunks
 
     def _extract_header_context(self, text, current_pos):

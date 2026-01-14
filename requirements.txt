@@ -10,3 +10,5 @@ pydantic
 openai
 # Optional: for fast quantization support
 auto-gptq
+reportlab
+rich

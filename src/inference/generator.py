@@ -4,11 +4,13 @@ import json
 import logging
 from vllm import LLM, SamplingParams
 from inference.prompts import SYSTEM_PROMPT, EXTRACTION_PROMPT_TEMPLATE
+from utils.logger import setup_logger
 
-logger = logging.getLogger(__name__)
+logger = setup_logger("FlashcardGenerator")
 
 class FlashcardGenerator:
-    def __init__(self, model_name="meta-llama/Meta-Llama-3-8B-Instruct", gpu_memory_utilization=0.7):
+    def __init__(self, model_name="Qwen/Qwen2.5-0.5B-Instruct", gpu_memory_utilization=0.7):
+        # Previous model: meta-llama/Meta-Llama-3-8B-Instruct
         """
         Initializes the vLLM engine.
         model_name: Path or HuggingFace ID of the model.
@@ -22,6 +24,7 @@ class FlashcardGenerator:
             model=model_name,
             gpu_memory_utilization=gpu_memory_utilization,
             trust_remote_code=True,
+            enforce_eager=True,
             # max_model_len=8192 # Adjust based on needs
         )
         self.sampling_params = SamplingParams(

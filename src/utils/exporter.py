@@ -5,6 +5,10 @@ import sqlite3
 import genanki
 import os
 from pathlib import Path
+from tqdm import tqdm
+from utils.logger import setup_logger, console
+
+logger = setup_logger("AnkiExporter")
 
 class AnkiExporter:
     def __init__(self, db_path="study_engine.db", output_dir="output"):
@@ -40,33 +44,54 @@ class AnkiExporter:
         total_cards = 0
         all_metadata = []
         
-        for row in cursor.fetchall():
-            cards_data = json.loads(row[0])
-            metadata = json.loads(row[1])
-            all_metadata.append(metadata)
+        rows = cursor.fetchall()
+        
+        from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
+        
+        if not rows:
+            logger.warning("[bold red]No completed cards found to export.[/]")
+            conn.close()
+            return
+
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(),
+            TaskProgressColumn(),
+            console=console
+        ) as progress:
             
-            for card in cards_data.get("flashcards", []):
-                note = genanki.Note(
-                    model=self.model,
-                    fields=[
-                        card.get('front', ''),
-                        card.get('back', ''),
-                        metadata.get('source_file', 'Unknown'),
-                        card.get('type', 'concept')
-                    ]
-                )
-                deck.add_note(note)
-                total_cards += 1
+            task_id = progress.add_task("Exporting Cards", total=len(rows))
+            
+            for row in rows:
+                cards_data = json.loads(row[0])
+                metadata = json.loads(row[1])
+                all_metadata.append(metadata)
+                
+                for card in cards_data.get("flashcards", []):
+                    note = genanki.Note(
+                        model=self.model,
+                        fields=[
+                            card.get('front', ''),
+                            card.get('back', ''),
+                            metadata.get('source_file', 'Unknown'),
+                            card.get('type', 'concept')
+                        ]
+                    )
+                    deck.add_note(note)
+                    total_cards += 1
+                
+                progress.advance(task_id)
         
         conn.close()
         
         if total_cards > 0:
             output_file = self.output_dir / f"{deck_name.replace(' ', '_')}.apkg"
             genanki.Package(deck).write_to_file(output_file)
-            print(f"Exported {total_cards} cards to {output_file}")
+            logger.info(f"Exported [bold green]{total_cards}[/] cards to [bold cyan]{output_file}[/]")
             self.generate_report(all_metadata)
         else:
-            print("No completed cards found to export.")
+            logger.warning("[bold red]No cards found in completed chunks.[/]")
 
     def generate_report(self, metadata_list):
         report_path = self.output_dir / "Coverage_Report.md"
@@ -76,7 +101,7 @@ class AnkiExporter:
             f.write("## Processed Files\n")
             for meta in metadata_list:
                 f.write(f"- {meta.get('source_file', 'Unknown')}\n")
-        print(f"Report generated at {report_path}")
+        logger.info(f"Report generated at [bold cyan]{report_path}[/]")
 
 if __name__ == "__main__":
     exporter = AnkiExporter()
