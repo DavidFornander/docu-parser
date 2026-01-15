@@ -4,6 +4,7 @@ import json
 import sqlite3
 import genanki
 import os
+import re
 from pathlib import Path
 from tqdm import tqdm
 from utils.logger import setup_logger, console
@@ -43,6 +44,7 @@ class AnkiExporter:
         
         total_cards = 0
         all_metadata = []
+        media_files = []
         
         rows = cursor.fetchall()
         
@@ -68,12 +70,32 @@ class AnkiExporter:
                 metadata = json.loads(row[1])
                 all_metadata.append(metadata)
                 
+                # Determine asset folder for this source
+                source_stem = Path(metadata.get('source_file', '')).stem
+                asset_dir = self.output_dir / source_stem / "assets"
+                
                 for card in cards_data.get("flashcards", []):
+                    front = card.get('front', '')
+                    back = card.get('back', '')
+                    
+                    # Scan for media references in HTML (e.g. <img src="image.png">
+                    for text in [front, back]:
+                        found_images = re.findall(r'<img [^>]*src="([^"]+)"', text)
+                        for img_name in found_images:
+                            img_path = asset_dir / img_name
+                            if img_path.exists():
+                                media_files.append(str(img_path))
+                            else:
+                                # Try fallback to global assets
+                                fallback_path = Path("assets") / img_name
+                                if fallback_path.exists():
+                                    media_files.append(str(fallback_path))
+
                     note = genanki.Note(
                         model=self.model,
                         fields=[
-                            card.get('front', ''),
-                            card.get('back', ''),
+                            front,
+                            back,
                             metadata.get('source_file', 'Unknown'),
                             card.get('type', 'concept')
                         ]
@@ -87,8 +109,14 @@ class AnkiExporter:
         
         if total_cards > 0:
             output_file = self.output_dir / f"{deck_name.replace(' ', '_')}.apkg"
-            genanki.Package(deck).write_to_file(output_file)
-            logger.info(f"Exported [bold green]{total_cards}[/] cards to [bold cyan]{output_file}[/]")
+            # Deduplicate media files
+            unique_media = list(set(media_files))
+            
+            package = genanki.Package(deck)
+            package.media_files = unique_media
+            package.write_to_file(output_file)
+            
+            logger.info(f"Exported [bold green]{total_cards}[/] cards and [bold yellow]{len(unique_media)}[/] media files to [bold cyan]{output_file}[/]")
             self.generate_report(all_metadata)
         else:
             logger.warning("[bold red]No cards found in completed chunks.[/]")

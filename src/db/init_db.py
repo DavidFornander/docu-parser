@@ -22,6 +22,8 @@ def init_db():
     print(f"Initializing database at: {DB_PATH}")
     try:
         conn = sqlite3.connect(DB_PATH)
+        # Enable WAL mode for concurrency
+        conn.execute("PRAGMA journal_mode=WAL")
         cursor = conn.cursor()
         cursor.execute(SCHEMA)
         conn.commit()

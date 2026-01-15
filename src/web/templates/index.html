@@ -11,18 +11,32 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap');
         body { font-family: 'Inter', sans-serif; }
         .mono { font-family: 'Fira Code', monospace; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0d1117; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+        
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #484f58; }
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .perspective { perspective: 1000px; }
+        .preserve-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        
+        .bg-app { background-color: #0d1117; }
+        .bg-surface { background-color: #161b22; }
+        .border-base { border-color: #30363d; }
     </style>
 </head>
-<body class="bg-[#0b0e14] text-white min-h-screen">
+<body class="bg-app text-white min-h-screen">
     <div class="max-w-6xl mx-auto p-6">
         
         <!-- Top Nav -->
-        <nav class="flex justify-between items-center mb-8 border-b border-gray-800 pb-6">
+        <nav class="flex justify-between items-center mb-8 border-b border-base pb-6">
             <div class="flex items-center space-x-3">
                 <div class="bg-blue-600 p-2 rounded-lg">
                     <i data-lucide="brain-circuit" class="w-6 h-6 text-white"></i>
@@ -32,15 +46,19 @@
                     <p class="text-gray-500 text-[10px] uppercase tracking-[0.2em] font-bold">Autonomous Education Pipeline</p>
                 </div>
             </div>
+            
             <div id="system-status" hx-get="/system_status" hx-trigger="load, every 2s" class="flex items-center space-x-4">
                 <!-- Real-time status will load here -->
             </div>
-            <div class="h-8 w-[1px] bg-gray-800"></div>
-            <button hx-post="/run/nuke" 
-                    hx-confirm="☢️ NUKE SYSTEM: This will delete ALL PDFs, flashcards, and logs. Are you sure?"
-                    class="text-[10px] bg-red-900/30 text-red-500 border border-red-500/30 px-3 py-1.5 rounded-lg hover:bg-red-600 hover:text-white transition-all uppercase font-bold tracking-widest">
-                Clear
-            </button>
+            
+            <div class="flex items-center space-x-4">
+                <div class="h-8 w-[1px] bg-[#30363d]"></div>
+                <button hx-post="/run/nuke" 
+                        hx-confirm="☢️ NUKE SYSTEM: This will delete ALL PDFs, flashcards, and logs. Are you sure?"
+                        class="text-[10px] bg-red-900/20 text-red-500 border border-red-500/30 px-3 py-1.5 rounded-lg hover:bg-red-600 hover:text-white transition-all uppercase font-bold tracking-widest">
+                    Clear
+                </button>
+            </div>
         </nav>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -49,14 +67,14 @@
             <div class="lg:col-span-4 space-y-8">
                 
                 <!-- Upload Section -->
-                <section class="bg-[#161b22] p-6 rounded-2xl border border-gray-800 shadow-2xl">
+                <section class="bg-surface p-6 rounded-xl border border-base shadow-2xl">
                     <div class="flex items-center space-x-2 mb-4">
                         <i data-lucide="upload-cloud" class="w-4 h-4 text-blue-500"></i>
                         <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Ingest Courseware</h2>
                     </div>
                     <div id="upload-status"></div>
                     <form id="upload-form" hx-post="/upload" hx-target="#upload-status" hx-encoding="multipart/form-data" class="space-y-4">
-                        <label id="drop-zone" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-700 border-dashed rounded-xl cursor-pointer hover:bg-gray-800 transition-all group">
+                        <label id="drop-zone" class="flex flex-col items-center justify-center w-full h-32 border-2 border-base border-dashed rounded-xl cursor-pointer hover:bg-[#1c2128] transition-all group">
                             <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                 <p class="mb-2 text-sm text-gray-400 font-semibold text-center px-4 italic group-hover:text-blue-400 transition-colors">Drop PDF here</p>
                                 <p class="text-[10px] text-gray-600 uppercase font-bold tracking-tighter">Maximum 500MB</p>
@@ -66,21 +84,32 @@
                     </form>
                 </section>
 
+                <!-- Files Section -->
+                <section class="bg-surface p-6 rounded-xl border border-base shadow-2xl">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i data-lucide="file-text" class="w-4 h-4 text-green-500"></i>
+                        <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Pending Files</h2>
+                    </div>
+                    <div id="files-container" hx-get="/files" hx-trigger="load, every 5s">
+                        <!-- Content loaded by HTMX -->
+                    </div>
+                </section>
+
                 <!-- Engine Config -->
-                <section class="bg-[#161b22] p-6 rounded-2xl border border-gray-800 shadow-2xl">
+                <section class="bg-surface p-6 rounded-xl border border-base shadow-2xl">
                     <div class="flex items-center space-x-2 mb-6">
                         <i data-lucide="settings-2" class="w-4 h-4 text-purple-500"></i>
                         <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Engine Mode</h2>
                     </div>
                     <form hx-post="/settings/model" hx-target="#model-indicator" class="space-y-3">
-                        <div class="flex items-center p-2 rounded-xl bg-black/40 border border-gray-800 hover:border-gray-700 transition-colors">
+                        <div class="flex items-center p-2 rounded-lg bg-[#0d1117]/40 border border-base hover:border-gray-600 transition-colors">
                             <input type="radio" id="mode-speed" name="mode" value="speed" class="hidden peer" checked onchange="this.form.dispatchEvent(new Event('submit'))">
                             <label for="mode-speed" class="flex-grow flex items-center justify-between cursor-pointer peer-checked:text-blue-400">
                                 <span class="text-xs font-bold uppercase tracking-wider pl-2">Speed</span>
                                 <span class="text-[9px] text-gray-600 font-mono pr-2">Qwen 0.5B</span>
                             </label>
                         </div>
-                        <div class="flex items-center p-2 rounded-xl bg-black/40 border border-gray-800 hover:border-gray-700 transition-colors">
+                        <div class="flex items-center p-2 rounded-lg bg-[#0d1117]/40 border border-base hover:border-gray-600 transition-colors">
                             <input type="radio" id="mode-mastery" name="mode" value="mastery" class="hidden peer" onchange="this.form.dispatchEvent(new Event('submit'))">
                             <label for="mode-mastery" class="flex-grow flex items-center justify-between cursor-pointer peer-checked:text-purple-400">
                                 <span class="text-xs font-bold uppercase tracking-wider pl-2">Mastery</span>
@@ -94,27 +123,27 @@
                 </section>
 
                 <!-- Stats Section -->
-                <section class="bg-[#161b22] p-6 rounded-2xl border border-gray-800 shadow-2xl">
+                <section class="bg-surface p-6 rounded-xl border border-base shadow-2xl">
                     <div class="flex items-center space-x-2 mb-6">
                         <i data-lucide="activity" class="w-4 h-4 text-green-500"></i>
                         <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Live Metrics</h2>
                     </div>
                     <div id="stats-container" hx-get="/stats" hx-trigger="load, every 5s">
                         <div class="animate-pulse space-y-4">
-                            <div class="h-12 bg-gray-800 rounded"></div>
-                            <div class="h-4 bg-gray-800 rounded w-1/2"></div>
+                            <div class="h-12 bg-[#1c2128] rounded-lg"></div>
+                            <div class="h-4 bg-[#1c2128] rounded w-1/2"></div>
                         </div>
                     </div>
                 </section>
 
                 <!-- Decks Section -->
-                <section class="bg-[#161b22] p-6 rounded-2xl border border-gray-800 shadow-2xl">
+                <section class="bg-surface p-6 rounded-xl border border-base shadow-2xl">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center space-x-2">
                             <i data-lucide="package" class="w-4 h-4 text-purple-500"></i>
                             <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Ready Decks</h2>
                         </div>
-                        <button hx-post="/run/export" hx-target="#export-status" class="text-[10px] bg-purple-900/30 text-purple-400 border border-purple-500/30 px-2 py-1 rounded hover:bg-purple-900/50 transition-colors uppercase font-bold">Generate</button>
+                        <button hx-post="/run/export" hx-target="#export-status" class="text-[10px] bg-purple-900/30 text-purple-400 border border-purple-500/30 px-2 py-1 rounded-lg hover:bg-purple-900/50 transition-colors uppercase font-bold">Generate</button>
                     </div>
                     <div id="export-status" class="mb-4"></div>
                     <div id="export-container" hx-get="/export" hx-trigger="load, every 10s">
@@ -126,8 +155,8 @@
             <div class="lg:col-span-8 space-y-8">
                 
                 <!-- Queue Table -->
-                <section class="bg-[#161b22] rounded-2xl border border-gray-800 shadow-2xl overflow-hidden">
-                    <div class="p-4 border-b border-gray-800 bg-[#1c2128] flex justify-between items-center">
+                <section class="bg-surface rounded-xl border border-base shadow-2xl overflow-hidden">
+                    <div class="p-4 border-b border-base bg-[#1c2128] flex justify-between items-center">
                         <div class="flex items-center space-x-2">
                             <i data-lucide="list-ordered" class="w-4 h-4 text-blue-400"></i>
                             <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">Active Queue</h2>
@@ -140,8 +169,8 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Heartbeat Logs -->
-                    <section class="bg-black rounded-2xl border border-gray-800 shadow-inner overflow-hidden flex flex-col h-[400px]">
-                        <div class="p-3 border-b border-gray-800 bg-[#0d1117] flex justify-between items-center">
+                    <section class="bg-black rounded-xl border border-base shadow-inner overflow-hidden flex flex-col h-[400px]">
+                        <div class="p-3 border-b border-base bg-[#0d1117] flex justify-between items-center">
                             <h2 class="text-[10px] font-bold text-blue-900 uppercase tracking-widest">System Heartbeat</h2>
                             <div class="flex space-x-1">
                                 <div class="w-2 h-2 rounded-full bg-red-900/50"></div>
@@ -149,20 +178,20 @@
                                 <div class="w-2 h-2 rounded-full bg-green-900/50"></div>
                             </div>
                         </div>
-                        <div id="logs-container" hx-get="/logs" hx-trigger="load, every 5s" class="p-4 overflow-y-auto flex-grow scroll-smooth">
+                        <div id="logs-container" hx-get="/logs" hx-trigger="load, every 5s" class="p-4 overflow-y-auto flex-grow scroll-smooth custom-scrollbar">
                         </div>
                     </section>
 
                     <!-- Detail Panel -->
-                    <section id="detail-panel" class="bg-[#161b22] rounded-2xl border border-gray-800 shadow-2xl h-[400px] overflow-hidden flex flex-col">
-                        <div class="p-3 border-b border-gray-800 bg-[#1c2128] flex items-center space-x-2">
+                    <section id="detail-panel" class="bg-surface rounded-xl border border-base shadow-2xl h-[400px] overflow-hidden flex flex-col">
+                        <div class="p-3 border-b border-base bg-[#1c2128] flex items-center space-x-2">
                             <i data-lucide="eye" class="w-4 h-4 text-gray-500"></i>
                             <h2 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Chunk Inspection</h2>
                         </div>
                         <div id="chunk-details" class="flex-grow">
-                            <div class="flex flex-col items-center justify-center h-full text-gray-600 space-y-2">
+                            <div class="flex flex-col items-center justify-center h-full text-gray-600 space-y-2 text-center p-8">
                                 <i data-lucide="mouse-pointer-click" class="w-8 h-8 opacity-20"></i>
-                                <p class="text-xs italic">Select a chunk to view generated cards</p>
+                                <p class="text-xs italic">Select a chunk from the queue to view and edit its generated cards</p>
                             </div>
                         </div>
                     </section>
@@ -173,6 +202,18 @@
         <footer class="mt-12 text-center text-gray-700 text-[9px] uppercase tracking-[0.3em] font-bold">
             Zero-Loss learning engine &bull; built for 2026 &bull; RTX 5070 status: optimized
         </footer>
+    </div>
+
+    <!-- Study Modal -->
+    <div id="study-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="bg-[#0d1117] w-full max-w-2xl rounded-3xl border border-gray-800 shadow-2xl relative overflow-hidden">
+            <button onclick="document.getElementById('study-modal').classList.add('hidden')" class="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors z-10">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div id="study-modal-content" class="min-h-[500px]">
+                <!-- Card player loaded here -->
+            </div>
+        </div>
     </div>
 
     <!-- Real Logic for Launch -->

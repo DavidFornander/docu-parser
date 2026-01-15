@@ -8,7 +8,9 @@ class DBManager:
         self.db_path = db_path
 
     def _get_connection(self):
-        return sqlite3.connect(self.db_path)
+        conn = sqlite3.connect(self.db_path)
+        conn.execute("PRAGMA journal_mode=WAL")
+        return conn
 
     def insert_chunk(self, chunk_id, source_text, metadata):
         """
