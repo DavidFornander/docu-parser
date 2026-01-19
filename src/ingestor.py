@@ -78,7 +78,8 @@ def main():
         TextColumn("[progress.description]{task.description}"),
         BarColumn(),
         TaskProgressColumn(),
-        console=console # Use the shared console
+        console=console,
+        refresh_per_second=1 # Slow down updates to avoid log spam
     ) as progress:
         
         pdf_task = progress.add_task("[cyan]Processing PDFs...", total=len(pdfs))

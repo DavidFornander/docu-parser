@@ -25,9 +25,6 @@ def setup_logger(name: str = "StudyEngine", level: int = logging.INFO, log_file:
     Uses RichHandler for console and FileHandler for persistent logs.
     """
     
-    # Ensure logs directory exists
-    os.makedirs("logs", exist_ok=True)
-    
     logger = logging.getLogger(name)
     logger.setLevel(level)
     
@@ -41,17 +38,20 @@ def setup_logger(name: str = "StudyEngine", level: int = logging.INFO, log_file:
         rich_tracebacks=True,
         show_time=True,
         show_path=False,
-        enable_link_path=True,
+        enable_link_path=False,
         markup=True
     )
     logger.addHandler(rich_handler)
     
-    # 2. File Handler (Plain Text)
+    # 2. File Handler (Plain Text - No Rich formatting)
     if log_file:
+        # Ensure directory exists (though config usually handles this)
+        os.makedirs(os.path.dirname(log_file), exist_ok=True)
+        
         file_handler = logging.FileHandler(log_file)
-        # Standard format for file logs so they are easy to grep/read
+        # Clean, predictable format for Web UI readability
         file_formatter = logging.Formatter(
-            '%(asctime)s | %(name)s | %(levelname)s | %(message)s',
+            '[%(asctime)s] %(levelname)-8s %(name)-12s | %(message)s',
             datefmt='%Y-%m-%d %H:%M:%S'
         )
         file_handler.setFormatter(file_formatter)

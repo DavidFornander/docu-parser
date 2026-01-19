@@ -119,8 +119,8 @@
         </section>
 
         <!-- Log Drawer -->
-        <div id="log-drawer" class="fixed top-[65px] right-0 bottom-0 w-[500px] bg-slate-900 shadow-2xl transform translate-x-full transition-transform duration-300 z-40 flex flex-col border-l border-slate-700">
-            <div class="flex items-center justify-between p-3 border-b border-slate-700 bg-slate-800">
+        <div id="log-drawer" class="fixed top-[65px] right-0 bottom-0 w-[500px] bg-slate-900 shadow-2xl transform translate-x-full transition-all duration-300 z-40 flex flex-col border-l border-slate-700">
+            <div class="flex items-center justify-between p-3 border-b border-slate-700 bg-slate-800 shrink-0">
                 <div class="flex items-center gap-2">
                     <i data-lucide="terminal" class="w-4 h-4 text-green-400"></i>
                     <select id="log-select" onchange="fetchLogContent()" class="bg-slate-700 text-slate-200 text-xs rounded border-none py-1 pl-2 pr-8 focus:ring-1 focus:ring-indigo-500">
@@ -130,11 +130,16 @@
                         <option value="ui_out.log">ui_out.log</option>
                     </select>
                 </div>
-                <button onclick="toggleLogDrawer()" class="text-slate-400 hover:text-white">
-                    <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
+                <div class="flex items-center gap-1">
+                    <button onclick="toggleLogExpand()" id="log-expand-btn" class="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors" title="Expand/Collapse">
+                        <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="toggleLogDrawer()" class="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
             </div>
-            <pre id="log-content" class="flex-1 p-4 overflow-auto font-mono text-xs text-slate-300 whitespace-pre-wrap leading-relaxed scroll-smooth"></pre>
+            <pre id="log-content" class="flex-1 p-4 overflow-auto font-mono text-xs text-slate-300 whitespace-nowrap leading-relaxed scroll-smooth"></pre>
         </div>
 
         <!-- File Viewer Modal -->
@@ -540,7 +545,10 @@
 
         // --- Log Drawer ---
         let isLogDrawerOpen = false;
+        let isLogExpanded = false;
         const logContent = document.getElementById('log-content');
+        const drawer = document.getElementById('log-drawer');
+        const expandBtn = document.getElementById('log-expand-btn');
         let autoScroll = true;
 
         // Detect manual scroll to disable auto-scroll
@@ -553,6 +561,21 @@
                 autoScroll = false;
             }
         });
+
+        function toggleLogExpand() {
+            isLogExpanded = !isLogExpanded;
+            
+            if (isLogExpanded) {
+                drawer.classList.remove('w-[500px]');
+                drawer.classList.add('w-[95vw]');
+                expandBtn.innerHTML = '<i data-lucide="minimize-2" class="w-4 h-4"></i>';
+            } else {
+                drawer.classList.remove('w-[95vw]');
+                drawer.classList.add('w-[500px]');
+                expandBtn.innerHTML = '<i data-lucide="maximize-2" class="w-4 h-4"></i>';
+            }
+            lucide.createIcons();
+        }
 
         function toggleLogDrawer() {
             const drawer = document.getElementById('log-drawer');

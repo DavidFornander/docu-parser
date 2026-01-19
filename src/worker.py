@@ -60,7 +60,8 @@ class StudyWorker:
             TextColumn("[progress.description]{task.description}"),
             BarColumn(),
             TaskProgressColumn(),
-            console=console
+            console=console,
+            refresh_per_second=1
         ) as progress:
             task_id = progress.add_task("[cyan]Processing Chunks...", total=initial_count if initial_count > 0 else None)
             signal.signal(signal.SIGALRM, timeout_handler)

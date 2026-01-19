@@ -44,8 +44,13 @@ class Settings(BaseSettings):
 
     @property
     def logs_dir(self) -> Path:
-        # Logs can be separate, but defaulting to inside data_dir is safe for portability
-        path = self.data_dir / "logs"
+        # Check if environment variable ZERO_LOG_DIR is set, otherwise default to data/logs
+        env_log_dir = os.environ.get("ZERO_LOG_DIR")
+        if env_log_dir:
+            path = Path(env_log_dir).resolve()
+        else:
+            path = self.data_dir / "logs"
+            
         path.mkdir(parents=True, exist_ok=True)
         return path
 
