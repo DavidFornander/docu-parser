@@ -13,8 +13,9 @@ from inference.generator import FlashcardGenerator
 from inference.prompts import REPAIR_PROMPT_TEMPLATE
 from verification.audit import CoverageAuditor, FactChecker
 from utils.logger import setup_logger, console
+from config import settings
 
-logger = setup_logger("Worker", log_file="logs/worker.log")
+logger = setup_logger("Worker", log_file=settings.logs_dir / "worker.log")
 
 class TimeoutException(Exception):
     pass
@@ -23,9 +24,9 @@ def timeout_handler(signum, frame):
     raise TimeoutException("Processing timed out")
 
 class StudyWorker:
-    def __init__(self, db_path="study_engine.db", model_name="casperhansen/llama-3-8b-instruct-awq"):
-        self.db = DBManager(db_path)
-        self.model_name = model_name
+    def __init__(self, db_path=None, model_name=None):
+        self.db = DBManager(db_path if db_path else settings.db_path)
+        self.model_name = model_name if model_name else settings.model_name
         self.generator = None
         self.auditor = None
         self.fact_checker = None
@@ -128,8 +129,15 @@ class StudyWorker:
 
 
 if __name__ == "__main__":
-    MODEL = os.getenv("MODEL_NAME", "casperhansen/llama-3-8b-instruct-awq")
-    worker = StudyWorker(model_name=MODEL)
+    # Settings automatically picks up ZERO_MODEL_NAME or overrides from config
+    # We can also check raw MODEL_NAME for backward compatibility if needed, 
+    # but let's stick to settings priority.
+    # However, server.py sets MODEL_NAME env var currently. We should check that or update server.py.
+    # For now, let's respect the passed arg or settings.
+    override_model = os.getenv("MODEL_NAME")
+    final_model = override_model if override_model else settings.model_name
+    
+    worker = StudyWorker(model_name=final_model)
     try:
         worker.run()
     except KeyboardInterrupt:

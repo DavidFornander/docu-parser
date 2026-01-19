@@ -7,16 +7,17 @@ from ingestion.pdf_processor import PDFProcessor
 from ingestion.chunker import SemanticChunker
 from db.db_manager import DBManager
 from utils.logger import setup_logger, console
+from config import settings
 
-logger = setup_logger("StudyEngine", log_file="logs/ingestion.log")
+logger = setup_logger("StudyEngine", log_file=settings.logs_dir / "ingestion.log")
 
 # Determine Input Directory
 target_notebook = os.environ.get("TARGET_NOTEBOOK")
 if target_notebook:
-    INPUT_DIR = Path("input") / target_notebook
+    INPUT_DIR = settings.input_dir / target_notebook
     logger.info(f"Targeting specific notebook: {target_notebook}")
 else:
-    INPUT_DIR = Path("input")
+    INPUT_DIR = settings.input_dir
     logger.info("Targeting root input directory")
 
 def check_environment():

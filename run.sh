@@ -16,7 +16,7 @@ fi
 
 # 2. Ingestion (PDF -> Markdown -> Chunks -> DB)
 echo "📄 Phase 1: Ingestion..."
-python3 src/main.py
+python3 src/ingestor.py
 
 # 3. Processing (Inference & Verification)
 echo "🧠 Phase 2: Processing (Worker)..."

@@ -2,10 +2,11 @@ import sqlite3
 import json
 import os
 from datetime import datetime
+from config import settings
 
 class DBManager:
-    def __init__(self, db_path="study_engine.db"):
-        self.db_path = db_path
+    def __init__(self, db_path=None):
+        self.db_path = str(db_path) if db_path else str(settings.db_path)
 
     def _get_connection(self):
         conn = sqlite3.connect(self.db_path)

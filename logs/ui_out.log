@@ -1,0 +1,35 @@
+INFO:     Started server process [1692]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     100.92.219.124:61793 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61794 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61794 - "GET / HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61794 - "GET /api/files/input HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61795 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61796 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61797 - "GET / HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61798 - "GET /api/files/input HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61797 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61798 - "GET / HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61797 - "GET /api/files/input HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61798 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61797 - "DELETE /api/delete_all/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61798 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61797 - "GET / HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61798 - "GET /api/files/input HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61797 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61799 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61799 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61800 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61801 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61802 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61803 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61804 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61805 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61806 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     100.92.219.124:61807 - "GET /api/files/output HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1692]

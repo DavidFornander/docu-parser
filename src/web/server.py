@@ -9,17 +9,19 @@ from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from typing import List, Optional
 from pydantic import BaseModel
+from config import settings
 
 app = FastAPI(title="Zero-Loss File Manager")
 
 # Configuration
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-INPUT_DIR = BASE_DIR / "input"
-OUTPUT_DIR = BASE_DIR / "output"
-LOGS_DIR = BASE_DIR / "logs"
+INPUT_DIR = settings.input_dir
+OUTPUT_DIR = settings.output_dir
+LOGS_DIR = settings.logs_dir
 
-INPUT_DIR.mkdir(parents=True, exist_ok=True)
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+# Directories are created by settings properties, but let's double check/ensure
+# settings.input_dir.mkdir(...) happens when accessed? 
+# Yes, property does it. Calling them above triggers creation.
 
 class PipelineRequest(BaseModel):
     model_name: str
@@ -42,7 +44,7 @@ async def run_pipeline_task(model_name: str, notebook: Optional[str] = None):
     # or just to the standard logs.
     
     cmd = (
-        f"python3 src/main.py && "
+        f"python3 src/ingestor.py && "
         f"python3 src/worker.py && "
         f"python3 src/utils/exporter.py"
     )

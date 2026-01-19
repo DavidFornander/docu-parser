@@ -5,26 +5,28 @@ from pathlib import Path
 from utils.logger import setup_logger
 from inference.vision import ImageDescriber
 from docling.document_converter import DocumentConverter
+from config import settings
 
 logger = setup_logger("PDFProcessor")
 
 class PDFProcessor:
-    def __init__(self, input_dir="input", output_dir="output", assets_dir="assets"):
-        self.input_dir = Path(input_dir)
+    def __init__(self, input_dir=None, output_dir=None, assets_dir=None):
+        self.input_dir = Path(input_dir) if input_dir else settings.input_dir
         
         # Notebook Override
         target_notebook = os.environ.get("TARGET_NOTEBOOK")
         if target_notebook:
-            self.output_dir = Path(output_dir) / target_notebook
+            base_out = Path(output_dir) if output_dir else settings.output_dir
+            self.output_dir = base_out / target_notebook
             logger.info(f"Targeting notebook output: {self.output_dir}")
         else:
-            self.output_dir = Path(output_dir)
+            self.output_dir = Path(output_dir) if output_dir else settings.output_dir
         
-        self.assets_dir = Path(assets_dir)
+        self.assets_dir = Path(assets_dir) if assets_dir else settings.assets_dir
         
-        self.input_dir.mkdir(exist_ok=True)
-        self.output_dir.mkdir(exist_ok=True)
-        self.assets_dir.mkdir(exist_ok=True)
+        self.input_dir.mkdir(exist_ok=True, parents=True)
+        self.output_dir.mkdir(exist_ok=True, parents=True)
+        self.assets_dir.mkdir(exist_ok=True, parents=True)
         self.converter = DocumentConverter()
 
     def enrich_with_visuals(self, md_file, assets_folder):

@@ -1,0 +1,12 @@
+Question,Answer,Source,Type
+What is the approximate value of the integral ∫ 1 - 1 t 2 - sin( πt ) dx if the step length h = 1?,1,080622_SF1524_Omtentamen_DEL1_SOL.pdf,formula
+Integralen (2p),,080622_SF1524_Omtentamen_DEL1_SOL.pdf,concept
+e(h) = ?,,080622_SF1524_Omtentamen_DEL1_SOL.pdf,concept
+Newton's method,,080622_SF1524_Omtentamen_DEL1_SOL.pdf,concept
+Relative uncertainty,,080622_SF1524_Omtentamen_DEL1_SOL.pdf,concept
+Interpolation degree,,080622_SF1524_Omtentamen_DEL1_SOL.pdf,concept
+y n - hay n ( K - y n ),y n +1 = y n + hay n ( K - y n ),080622_SF1524_Omtentamen_DEL1_SOL.pdf,concept
+Vilken noggrannhetsordning har framåt Eulers metod?,1,080622_SF1524_Omtentamen_DEL1_SOL.pdf,concept
+a) Vektorn glyph[vector] b i normalekvationerna blir,"( - 1 , 1 , 19) T",080622_SF1524_Omtentamen_DEL1_SOL.pdf,concept
+b) Hur många element har residualvektorn ?,5,080622_SF1524_Omtentamen_DEL1_SOL.pdf,concept
+iterationsformeln,x k +1 = x k - x 2 k - 2 x k + x k - 1,080622_SF1524_Omtentamen_DEL1_SOL.pdf,concept

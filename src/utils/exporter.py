@@ -6,20 +6,23 @@ import csv
 import os
 from pathlib import Path
 from utils.logger import setup_logger, console
+from config import settings
 
 logger = setup_logger("CSVExporter")
 
 class CSVExporter:
-    def __init__(self, db_path="study_engine.db", output_dir="output"):
-        self.db_path = db_path
+    def __init__(self, db_path=None, output_dir=None):
+        self.db_path = str(db_path) if db_path else str(settings.db_path)
         
+        base_out = Path(output_dir) if output_dir else settings.output_dir
+
         # Notebook Override
         target_notebook = os.environ.get("TARGET_NOTEBOOK")
         if target_notebook:
-            self.output_dir = Path(output_dir) / target_notebook
+            self.output_dir = base_out / target_notebook
             logger.info(f"Targeting notebook output: {self.output_dir}")
         else:
-            self.output_dir = Path(output_dir)
+            self.output_dir = base_out
             
         self.output_dir.mkdir(exist_ok=True, parents=True)
 
