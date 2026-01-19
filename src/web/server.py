@@ -19,6 +19,9 @@ INPUT_DIR = settings.input_dir
 OUTPUT_DIR = settings.output_dir
 LOGS_DIR = settings.logs_dir
 
+# Pipeline status tracking
+pipeline_status = {"status": "idle", "started_at": None}
+
 # Directories are created by settings properties, but let's double check/ensure
 # settings.input_dir.mkdir(...) happens when accessed? 
 # Yes, property does it. Calling them above triggers creation.
@@ -34,14 +37,14 @@ async def run_pipeline_task(model_name: str, notebook: Optional[str] = None):
     """
     Runs the pipeline steps sequentially in the background.
     """
+    global pipeline_status
+    pipeline_status = {"status": "running", "started_at": "now"}
+    
     env = os.environ.copy()
     env["PYTHONPATH"] = f"{env.get('PYTHONPATH', '')}:{BASE_DIR}/src"
     env["MODEL_NAME"] = model_name
     if notebook:
         env["TARGET_NOTEBOOK"] = notebook
-    
-    # We log to a specific file so the user can potentially see it (not implemented in UI yet)
-    # or just to the standard logs.
     
     cmd = (
         f"python3 src/ingestor.py && "
@@ -50,7 +53,6 @@ async def run_pipeline_task(model_name: str, notebook: Optional[str] = None):
     )
     
     try:
-        # Run as a shell command, redirecting output to pipeline.log
         log_file_path = LOGS_DIR / "pipeline.log"
         with open(log_file_path, "w") as f:
             process = await asyncio.create_subprocess_shell(
@@ -64,16 +66,26 @@ async def run_pipeline_task(model_name: str, notebook: Optional[str] = None):
         
         if process.returncode != 0:
             print(f"Pipeline failed. Check {log_file_path}")
+            pipeline_status = {"status": "idle", "started_at": None}
         else:
             print("Pipeline completed successfully.")
+            pipeline_status = {"status": "completed", "started_at": None}
             
     except Exception as e:
         print(f"Error running pipeline: {e}")
+        pipeline_status = {"status": "idle", "started_at": None}
 
 @app.post("/api/run")
 async def run_pipeline(request: PipelineRequest, background_tasks: BackgroundTasks):
     background_tasks.add_task(run_pipeline_task, request.model_name, request.notebook)
     return {"status": "started", "model": request.model_name, "notebook": request.notebook}
+
+@app.get("/api/pipeline/status")
+async def get_pipeline_status():
+    """
+    Returns the current status of the pipeline.
+    """
+    return pipeline_status
 
 @app.get("/api/logs/content/{filename}")
 async def get_log_content(filename: str):

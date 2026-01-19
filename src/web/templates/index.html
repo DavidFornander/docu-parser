@@ -8,6 +8,13 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         .drag-active { background-color: #ecfdf5; border-color: #10b981; }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-dot {
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 h-screen flex flex-col font-sans">
@@ -31,6 +38,7 @@
                 <div class="w-16 h-1.5 bg-slate-200 rounded-full overflow-hidden ml-1">
                     <div id="vram-bar" class="h-full bg-indigo-500 w-0 transition-all duration-500"></div>
                 </div>
+                <div id="pipeline-dot" class="w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors duration-300" title="Pipeline Status"></div>
             </div>
 
             <!-- Model Selector -->
@@ -131,7 +139,7 @@
                     </select>
                 </div>
                 <div class="flex items-center gap-1">
-                    <button onclick="toggleLogExpand()" id="log-expand-btn" class="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors" title="Expand/Collapse">
+                    <button onclick="toggleLogDrawer()" id="log-expand-btn" class="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors" title="Expand/Collapse">
                         <i data-lucide="maximize-2" class="w-4 h-4"></i>
                     </button>
                     <button onclick="toggleLogDrawer()" class="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors">
@@ -483,10 +491,6 @@
             btn.innerHTML = `<i class="animate-spin" data-lucide="loader-2"></i> Running...`;
             lucide.createIcons();
             
-            // Auto open logs
-            if (!isLogDrawerOpen) toggleLogDrawer();
-            document.getElementById('log-select').value = 'pipeline.log';
-
             const payload = { model_name: model };
             if (currentNotebook) payload.notebook = currentNotebook;
 
@@ -539,13 +543,36 @@
             }
         }
 
+        async function fetchPipelineStatus() {
+            try {
+                const res = await fetch('/api/pipeline/status');
+                const data = await res.json();
+                const dot = document.getElementById('pipeline-dot');
+                
+                dot.classList.remove('bg-slate-300', 'bg-yellow-500', 'bg-green-500', 'animate-pulse-dot');
+                
+                if (data.status === 'running') {
+                    dot.classList.add('bg-yellow-500', 'animate-pulse-dot');
+                } else if (data.status === 'completed') {
+                    dot.classList.add('bg-green-500');
+                } else {
+                    dot.classList.add('bg-slate-300');
+                }
+            } catch (e) {
+                // Silent fail
+            }
+        }
+
         // Poll stats every 2s
         setInterval(fetchSystemStats, 2000);
         fetchSystemStats();
+        
+        // Poll pipeline status every 2s
+        setInterval(fetchPipelineStatus, 2000);
+        fetchPipelineStatus();
 
         // --- Log Drawer ---
-        let isLogDrawerOpen = false;
-        let isLogExpanded = false;
+        let logState = 0;
         const logContent = document.getElementById('log-content');
         const drawer = document.getElementById('log-drawer');
         const expandBtn = document.getElementById('log-expand-btn');
@@ -562,35 +589,28 @@
             }
         });
 
-        function toggleLogExpand() {
-            isLogExpanded = !isLogExpanded;
+        function toggleLogDrawer() {
+            logState = (logState + 1) % 3;
             
-            if (isLogExpanded) {
-                drawer.classList.remove('w-[500px]');
-                drawer.classList.add('w-[95vw]');
-                expandBtn.innerHTML = '<i data-lucide="minimize-2" class="w-4 h-4"></i>';
-            } else {
-                drawer.classList.remove('w-[95vw]');
+            if (logState === 0) {
+                drawer.classList.add('translate-x-full');
+                expandBtn.innerHTML = '<i data-lucide="maximize-2" class="w-4 h-4"></i>';
+            } else if (logState === 1) {
+                drawer.classList.remove('translate-x-full', 'w-[95vw]');
                 drawer.classList.add('w-[500px]');
                 expandBtn.innerHTML = '<i data-lucide="maximize-2" class="w-4 h-4"></i>';
+            } else {
+                drawer.classList.remove('translate-x-full', 'w-[500px]');
+                drawer.classList.add('w-[95vw]');
+                expandBtn.innerHTML = '<i data-lucide="minimize-2" class="w-4 h-4"></i>';
             }
+            
+            if (logState > 0) fetchLogContent();
             lucide.createIcons();
         }
 
-        function toggleLogDrawer() {
-            const drawer = document.getElementById('log-drawer');
-            isLogDrawerOpen = !isLogDrawerOpen;
-            
-            if (isLogDrawerOpen) {
-                drawer.classList.remove('translate-x-full');
-                fetchLogContent(); // Fetch immediately
-            } else {
-                drawer.classList.add('translate-x-full');
-            }
-        }
-
         async function fetchLogContent() {
-            if (!isLogDrawerOpen) return;
+            if (logState === 0) return;
             
             const filename = document.getElementById('log-select').value;
             try {

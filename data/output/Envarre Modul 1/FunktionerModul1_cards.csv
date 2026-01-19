@@ -684,3 +684,184 @@ What are nivå ytor in three-dimensional space?,Nivå ytor are ellipsoids around
 What is the domain of all real numbers?,All points in the entirety of R².,FunktionerModul1.pdf,concept
 What is the excluded value in the domain of R²?,"The point (0, 0) is excluded from the domain of R².",FunktionerModul1.pdf,concept
 Why are functions given by elements of R² continuous?,Functions given by elements of R² are continuous because they are defined and have no breaks or jumps.,FunktionerModul1.pdf,concept
+I planet anv¨ ander vi ofta pol¨ ara koordinater.,"Ja, planet anv¨ ander pol¨ ara koordinater.",FunktionerModul1.pdf,concept
+"En noll-skilld vektor i R 2 kan beskrivas med avst˚ andet fr˚ an origo, och vinkeln - som vi m¨ ater moturs fr˚ an x -axeln.","Ja, en noll-skilld vektor i R 2 kan beskrivas med avst˚ andet fr˚ an origo, och vinkeln - som vi m¨ ater moturs fr˚ an x -axeln.",FunktionerModul1.pdf,concept
+"Om ( x, y ) ¨ ar koordinaterna till en noll-skilld vektor har vi relationerna","Ja, om ( x, y ) ¨ ar koordinaterna till en noll-skilld vektor har vi relationerna d²x² + y² = r² och 0 ≤ θ ≤ 2π.",FunktionerModul1.pdf,concept
+1.1 Pol¨ ara koordinater,"1.1 Pol¨ ara koordinater är en speciella system för koordinatan och vektorer i R 2. Nätverkskraften av en vektor i R 2 kan beskrivas med avst˚ och andet fr˚ an origo, och vinkeln - som vi m¨ ater moturs fr˚ an x -axeln.",FunktionerModul1.pdf,concept
+1.2 Cylinderkoordinater,"1.2 Cylinderkoordinater är en speciella system för koordinatan och vektorer i R 3. Fördelar till tredje koordinaten. Det vill s¨ aga om (x, y, z) är koordinaterna till en punkt i R 3, d ˚ a ges cylinderkoordinater (r, θ, z) vilka best¨ ammer ett omr˚ ade, en s˚ akallad annulus, A i planet.",FunktionerModul1.pdf,concept
+1.3 Sf¨ ariska koordinater,"1.3 Sf¨ ariska koordinater är en speciella system för koordinatan och vektorer i R 3. De sf¨ ariska koordinaterna (R,ϕ,θ) är lite sv˚ arare att visualisera vid f¨ orsta m¨ ote, men är end˚ a mycket naturliga. En given punkt (x, y, z) befinner sig p˚ a en unik sf¨ ar centrerad omkring origo. Radien av denna sf¨ ar är R = √ x 2 + y 2 + z 2. Vi l˚ ater positiva z -axeln best¨ amma nordpolen p˚ a varje s˚ adan sf¨ ar.",FunktionerModul1.pdf,concept
+Uppgifter,"Uppgift 1.3. Beskriv nedanst˚ aende omr˚ aden dels i rektangul¨ ara koordinater, dels i pol¨ ara koordinater.",FunktionerModul1.pdf,definition
+ssera f¨ oljande omr˚ aden uttryckta i pol¨ ara koordinater.,"a) r ≤ 4,
+b) π/ 4 ≤ θ ≤ 3 π/ 4,
+c) 0 ≤ r ≤ 5 , π ≤ θ ≤ 3 π/ 2,
+d) r = 2 , 0 ≤ θ ≤ π,
+e) 1 ≤ r ≤ 3 , θ = π/ 4,
+f) r = 0.",FunktionerModul1.pdf,definition
+"Uppgift 1.4. Hur beskrivs Ω = { ( x, y ) : 1 ≤ x 2 + y 2 ≤ 3 och | x | &lt; y } i pol¨ ara koordinater.","Uppgift 1.4. Hur beskrivs Ω = { ( x, y ) : 1 ≤ x 2 + y 2 ≤ 3 och | x | &lt; y } i pol¨ ara koordinater.",FunktionerModul1.pdf,definition
+Uppgift 1.5. Beskriv omr˚ adet i cylindriska koordinater. (En ruta = en l¨ angdenhet.),Uppgift 1.5. Beskriv omr˚ adet i cylindriska koordinater. (En ruta = en l¨ angdenhet.),FunktionerModul1.pdf,definition
+"a) 0 ≤ r ≤ 3, 0 ≤ z ≤ 4","a) 0 ≤ r ≤ 3, 0 ≤ z ≤ 4",FunktionerModul1.pdf,definition
+"b) z = 2 r , z ≤ 4","b) z = 2 r , z ≤ 4",FunktionerModul1.pdf,definition
+c) 0 ≤ z ≤ 5 -r 2 / 3,c) 0 ≤ z ≤ 5 -r 2 / 3,FunktionerModul1.pdf,definition
+Uppgift 1.7. Skissera f¨ oljande omr˚ aden beskrivna i sf¨ ariska koordinater.,Uppgift 1.7. Skissera f¨ oljande omr˚ aden beskrivna i sf¨ ariska koordinater.,FunktionerModul1.pdf,definition
+"a) 0 ≤ r ≤ 5, 0 ≤ ϕ ≤ π/ 6, π/ 2 ≤ θ ≤ 2 π","a) 0 ≤ r ≤ 5, 0 ≤ ϕ ≤ π/ 6, π/ 2 ≤ θ ≤ 2 π",FunktionerModul1.pdf,definition
+"b) 0 ≤ r ≤ 5, π/ 18 ≤ ϕ ≤ π/ 4, 0 ≤ θ ≤ π/ 2","b) 0 ≤ r ≤ 5, π/ 18 ≤ ϕ ≤ π/ 4, 0 ≤ θ ≤ π/ 2",FunktionerModul1.pdf,definition
+"Uppgift 1.8. Beskriv f¨ oljande fj¨ ardedelsklot med radie a dels i rektangul¨ ara koordinater, dels i rymdpol¨ ara koordinater.","Uppgift 1.8. Beskriv f¨ oljande fj¨ ardedelsklot med radie a dels i rektangul¨ ara koordinater, dels i rymdpol¨ ara koordinater.",FunktionerModul1.pdf,definition
+"a) 0 ≤ r ≤ 5, 0 ≤ ϕ ≤ π/ 6, π/ 2 ≤ θ ≤ 2 π","a) 0 ≤ r ≤ 5, 0 ≤ ϕ ≤ π/ 6, π/ 2 ≤ θ ≤ 2 π",FunktionerModul1.pdf,definition
+"b) 0 ≤ r ≤ 5, π/ 18 ≤ ϕ ≤ π/ 4, 0 ≤ θ ≤ π/ 2","b) 0 ≤ r ≤ 5, π/ 18 ≤ ϕ ≤ π/ 4, 0 ≤ θ ≤ π/ 2",FunktionerModul1.pdf,definition
+"Uppgift 1.9. Hur beskrivs m¨ angden K = { ( x, y, z ) : x 2 + y 2 + z 2 &lt; 9 , y &gt; 0 och z &gt; 0 } i sf¨ ariska koordinater?","Uppgift 1.9. Hur beskrivs m¨ angden K = { ( x, y, z ) : x 2 + y 2 + z 2 &lt; 9 , y &gt; 0 och z &gt; 0 } i sf¨ ariska koordinater?",FunktionerModul1.pdf,definition
+3.1 Vektorvärden funktioner,"Vektorvärden funktioner har en ordnad sekvens x1, x2, ..., xn av reellvärden funktioner x'i: R → R^n med i = 1, ..., n. Funktionerna x1, x2, ..., xn kallar vi koordinatfunktionerna til r.",FunktionerModul1.pdf,definition
+Koordinatfunktioner,"Koordinatfunktionerna är en ordnad sekvens x1, x2, ..., xn av reellvärden funktioner x'i: R → R^n med i = 1, ..., n. Funktionerna x1, x2, ..., xn kallar vi koordinatfunktionerna til r.",FunktionerModul1.pdf,definition
+Derivator,Om koordinatfunktionerna till en vektorvärden funktion r: R → R^n ¨ ar deriverbara f˚ ar vi en ny vektorvärden funktion d: R → R^n definerad av uttrycket uttrycket.,FunktionerModul1.pdf,definition
+3.2 Kurvor och parametrisering,"Bilden av funktionen r(a, b): [a, b] → R^n med godtyckliga a ≤ t ≤ b, och kallas en kurva i R^n.",FunktionerModul1.pdf,definition
+Sl¨ at kurva,"L˚ at r: [a, b] → R^n är en vektorvärden funktion d: R → R^n definerad av uttrycket uttrycket. Om derivatan d(r(t)): R → R^n ger en noll-skilld riktningsvektor f¨ or tangentlinjen till kurvan C i varje punkt r(a, b) d˚ a s¨ ager vi att kurvan C ¨ ar sl¨ at.",FunktionerModul1.pdf,definition
+Kurvan,"L˚ at r: [a, b] → R^n är en vektorvärden funktion d: R → R^n definerad av uttrycket uttrycket. Om derivatan d(r(t)): R → R^n ger en noll-skilld riktningsvektor f¨ or tangentlinjen till kurvan C i varje punkt r(a, b) d˚ a s¨ ager vi att kurvan C ¨ ar sl¨ at.",FunktionerModul1.pdf,definition
+Lösenord,"Lösenord är en funktion med deriverbara koordinatfunktioner. Bilden till funktionen r(a, b): [a, b] → R^n med godtyckliga a ≤ t ≤ b, och kallas en kurva i R^n.",FunktionerModul1.pdf,definition
+3.1 Vektorvärden funktioner,Vektorvärden funktioner är en specifik formel för en funktion som beskriver hur en partiellt skapad punkt skall vara. Detta är en specifik formel för en funktion som beskriver hur en partiellt skapad punkt skall vara.,FunktionerModul1.pdf,concept
+Koordinatfunktioner,Koordinatfunktioner är en specifik formel för en funktion som beskriver hur en partiellt skapad punkt skall vara. Detta är en specifik formel för en funktion som beskriver hur en partiellt skapad punkt skall vara.,FunktionerModul1.pdf,concept
+Derivator,"Om koordinatfunktionerna till en vektorvärden funktion r : R -→ R n ¨ ar deriverbara f˚ ar vi en ny vektorvärden funktion d r : R → R n definerad av uttrycket
+
+Anm¨ arkning 3.1.1.
+Vi kan f¨ orest¨ alla oss att r ( t ) ¨ ar en funktion som sveper ut positionen till en partikel vid tiden t.
+Om dess koordinatfunktioner ¨ ar deriverbara d˚ a beskriver d r hastigheten till partikeln vid positionen r ( t ).
+Om nu koordinatfunktionerna till d r ¨ ar deriverbara d˚ a ¨ ar accelerationen, som f˚ as via derivering av koordinatfunktionerna till d r , ocks˚ a en vektorvärden funktion.",FunktionerModul1.pdf,concept
+3.2 Kurvor och parametrisering,3.2 Kurvor och parametrisering,FunktionerModul1.pdf,concept
+Kurvor,Kurvor är en specifik formel för en funktion som beskriver hur en partiellt skapad punkt skall vara. Detta är en specifik formel för en funktion som beskriver hur en partiellt skapad punkt skall vara.,FunktionerModul1.pdf,concept
+Sl¨ at kurva,Sl¨ at kurva är en specifik formel för en funktion som beskriver hur en partiellt skapad punkt skall vara. Detta är en specifik formel för en funktion som beskriver hur en partiellt skapad punkt skall vara.,FunktionerModul1.pdf,concept
+Orientering,Orientering är en specifik formel för en funktion som beskriver hur en partiellt skapad punkt skall vara. Detta är en specifik formel för en funktion som beskriver hur en partiellt skapad punkt skall vara.,FunktionerModul1.pdf,concept
+Sl¨ at kurva,"Sl¨ at är en vektorv¨ ard funktion, vilket beskriver en kurva i ett punkt eller en rymdkurva.",FunktionerModul1.pdf,concept
+At kurva i punkten r (c) ges d¨ armed av uttrycket med godtyckliga t.,"At kurva i punkten r (c) ges d¨ armed av uttrycket med godtyckliga t, vilket är en funktion som beskriver hur deras vektorv¨ ard för att gå från punkten r (c) till punkten r (b).",FunktionerModul1.pdf,concept
+"Kurvan som best¨ ams av funktionen r (t) = (t 2 , t 3) ¨ ar inte sl¨ at i punkten r (0) = (0, 0) d˚ a derivatan av komponentfunktionerna ¨ ar noll i denna punkt.","Kurvan som best¨ ams av funktionen r (t) = (t 2 , t 3) ¨ ar inte sl¨ at i punkten r (0) = (0, 0) d˚ a derivatan av komponentfunktionerna ¨ ar noll i denna punkt. Det är en fall av en funktionsforsvar, vilket innebär att deras derivatan är null på punkten r (0).",FunktionerModul1.pdf,concept
+Orientering till kurvan,"Orienteringen till kurvan är en vektorv¨ ard funktion, vilket beskriver hur deras vektorv¨ ard för att gå från punkten r (a) till punkten r (b). Orienteringen är en vektorv¨ ard, vilket beskriver hur deras vektorv¨ ard för att gå från punkten r (a) till punkten r (b) i en rymdkurva.",FunktionerModul1.pdf,concept
+Parametriserad kurva,"Parametriserad kurva är en kurva, vilket beskriver en kurva i ett punkt eller en rymdkurva, vilket har en vektorv¨ ard funktion som beskriver hur deras vektorv¨ ard för att gå från punkten r (a) till punkten r (b). Parametriserad kurva har en vektorv¨ ard funktion, vilket beskriver hur deras vektorv¨ ard för att gå från punkten r (a) till punkten r (b) i en rymdkurva.",FunktionerModul1.pdf,concept
+Exempel 5,"Ekvationssystemet
+
+i tre ok¨ anda (x, y, z) är en rymdkurva C.
+Notera att den f¨ orsta ekvationen beskriver en cirkel med radie 2 i (x, y)-planet, men att z-v¨ ardet ¨ ar godtyckligt.
+L¨ osningen till denna ekvation beskriver en cylinder.
+Sk¨ arningen av denna cylinder med planet {z = x + 2y} beskriver rymdkurvan C.
+En parametrisering av denna kurva är
+
+
+",FunktionerModul1.pdf,concept
+3.3 B˚ agl¨ angd,C,FunktionerModul1.pdf,concept
+3.4 Linjeintegral,r(t),FunktionerModul1.pdf,concept
+Exempel 7,"f(x,y)=x, r(t)=(t,t^2), t∈[0,2]",FunktionerModul1.pdf,concept
+Uppgifter,"φ(t)=1/12(1+4t^2)^{3/2}, t∈[0,2]",FunktionerModul1.pdf,concept
+Uppgift 3.12,"r(t)=(2cosπt,sinπt)",FunktionerModul1.pdf,concept
+Uppgift 3.13,"a) Cirkeln y=2x^2+2y^2=6, x∈[-2,2]; b) Linjestycket y=3x+5, x∈[0,3]; c) Ellipsen x^2+4y^2=4, x∈[-2,2]",FunktionerModul1.pdf,concept
+Uppgift 3.14,"Partikel ror sig längs en kurva i R² s˚ a att den vid tidpunkt t sekunder efter starten befinner sig i punkten r(t)=(2cosπt,sinπt). Enhet p˚ a axlarna m=3√1+4t^2.",FunktionerModul1.pdf,concept
+Uppgift 3.15,"Partikel ror sig i planet längs en ellipskurva s˚ a att den vid tidpunkt t≥0 befinner sig i punkten r(t)=(2cosπt,sinπt). Enhet p˚ a axlarna m=3√1+4t^2.",FunktionerModul1.pdf,concept
+Uppgifter,Enhet p˚ a axlarna ¨ ar meter.,FunktionerModul1.pdf,definition
+t ). Enhet p˚ a axlarna ¨ ar meter.,a) Vilken typ av kurva r¨ or sig partikeln l¨ angs?,FunktionerModul1.pdf,definition
+- a) Vilken typ av kurva r¨ or sig partikeln l¨ angs?,"b) Best¨ am partikelns hastighet, fart och acceleration vid tidpunkten t = 2.",FunktionerModul1.pdf,definition
+Uppgift 3.15. En partikel r¨ or sig i planet l¨ angs en ellipskurva s˚ a att den vid tidpunkten t ≥ 0 befinner sig i punkten,a) I vilka punkter p˚ a kurvan ¨ ar farten som st¨ orst?,FunktionerModul1.pdf,definition
+"Uppgift 3.16. En partikel r¨ or sig l¨ angs en kurva i R 3 s˚ a att den vid tidpunkten t sekunder efter starten befinner sig i punkten r ( t ) = ( t, t 2 , t 3 ). Enheten p˚ a axlarna ¨ ar meter.","Uppgift 3.16. En partikel r¨ or sig l¨ angs en kurva i R 3 s˚ a att den vid tidpunkten t sekunder efter starten befinner sig i punkten r ( t ) = ( t, t 2 , t 3 ). Enheten p˚ a axlarna ¨ ar meter.",FunktionerModul1.pdf,definition
+"Uppgift 3.17. En kurva i R 3 parametriseras genom r ( t ) = ( t, t 2 , 4) d¨ ar t ∈ R.","Uppgift 3.17. En kurva i R 3 parametriseras genom r ( t ) = ( t, t 2 , 4) d¨ ar t ∈ R.",FunktionerModul1.pdf,definition
+"Uppgift 3.18. Betrakta spiralkurvan ( x, y, z ) = (cos 2 πt, sin 2 πt, t ) d¨ ar t ∈ R.","Uppgift 3.18. Betrakta spiralkurvan ( x, y, z ) = (cos 2 πt, sin 2 πt, t ) d¨ ar t ∈ R.",FunktionerModul1.pdf,definition
+"a) Verifiera att punkten (1 , 0 , 1) ligger p˚ a kurvan.","b) Best¨ am en tangentvektor till kurvan i punkten (1 , 0 , 1).",FunktionerModul1.pdf,definition
+"b) Best¨ am en tangentvektor till kurvan i punkten (1 , 0 , 1).","c) Best¨ am en parametrisering av tangentlinjen till kurvan i punkten (1 , 0 , 1).",FunktionerModul1.pdf,definition
+"c) Best¨ am en parametrisering av tangentlinjen till kurvan i punkten (1 , 0 , 1).",d) Best¨ am l¨ angden av den del av kurvan som f˚ as d˚ a 0 ≤ t ≤ 1.,FunktionerModul1.pdf,definition
+Uppgift 3.15.,Uppgift 3.15.,FunktionerModul1.pdf,specific
+En partikel r¨ or sig i planet l¨ angs en ellipskurva s˚ a att den vid tidpunkten t ≥ 0 befinner sig i punkten,En partikel r¨ or sig i planet l¨ angs en ellipskurva s˚ a att den vid tidpunkten t ≥ 0 befinner sig i punkten,FunktionerModul1.pdf,specific
+Uppgift 3.16.,Uppgift 3.16.,FunktionerModul1.pdf,specific
+Uppgift 3.17.,Uppgift 3.17.,FunktionerModul1.pdf,specific
+Uppgift 3.18.,Uppgift 3.18.,FunktionerModul1.pdf,specific
+Uppgifter,Kontinuerlig utveckling,FunktionerModul1.pdf,definition
+nktioner kontinuerliga?,Kontinuerlig utveckling?,FunktionerModul1.pdf,definition
+Facit och l¨ osningstips,Lösenord och lösningstips,FunktionerModul1.pdf,definition
+1.1.,1.1.1. Rektangulära koordinater:,FunktionerModul1.pdf,definition
+1.2.,1.2.1. Rektangulära koordinater:,FunktionerModul1.pdf,definition
+1.3.,1.3.1. Rektangulära koordinater:,FunktionerModul1.pdf,definition
+1.4.,1.4.1. Rektangulära koordinater:,FunktionerModul1.pdf,definition
+1.5.,1.5.1. Rektangulära koordinater:,FunktionerModul1.pdf,definition
+1.8.,1.8.1. Rektangulära koordinater:,FunktionerModul1.pdf,definition
+1.9.,1.9.1. I xyz-rymden:,FunktionerModul1.pdf,definition
+1.10.,"1.10.1. L˚ at P = (a, b) vara en punkt ej med i m¨ angden C1.",FunktionerModul1.pdf,definition
+1.11.,1.11.1. Randpunkterna:,FunktionerModul1.pdf,definition
+2.10.,The question/front of the card,FunktionerModul1.pdf,definition
+2.11.,The question/front of the card,FunktionerModul1.pdf,definition
+3.12.,The question/front of the card,FunktionerModul1.pdf,definition
+3.13.,The question/front of the card,FunktionerModul1.pdf,definition
+3.14.,The question/front of the card,FunktionerModul1.pdf,definition
+3.15.,The question/front of the card,FunktionerModul1.pdf,definition
+3.16.,The question/front of the card,FunktionerModul1.pdf,definition
+3.17.,The question/front of the card,FunktionerModul1.pdf,definition
+3.18.,The question/front of the card,FunktionerModul1.pdf,definition
+3.19.,The question/front of the card,FunktionerModul1.pdf,definition
+4.19.,The question/front of the card,FunktionerModul1.pdf,definition
+2.10,"P = (√5, 5) is not in the plane C3, but every point B in P has an orthogonal vector with C3.",FunktionerModul1.pdf,concept
+3.14,"Hastigheten är r'(2) = (0, π), hastighet är r''(2) = (-2π², 0).",FunktionerModul1.pdf,concept
+"a) Parametriseringen för f(x, y, z)","x = -1 + 2cos(t) och y = 2sin(t), t ∈ [0, 2π]",FunktionerModul1.pdf,concept
+"b) Parametriseringen för f(x, y, z)","x = t och y = 3t + 5, t ∈ [0, 3]",FunktionerModul1.pdf,concept
+"c) Parametriseringen för f(x, y, z)","x = 2cosθ och y = sinθ, t ∈ [0, 2π]",FunktionerModul1.pdf,concept
+3.18. Algebra och geometri.,"Ibland skriver vi bara (x, y, z) = (1, 2πt, 1 + t), d˚ a t ∈ R, och menar samma sak som ovan.",FunktionerModul1.pdf,definition
+-√-√,d) Längden ¨ ar ∫ 1 0 1 + 4π 2 dt = 1 + 4π 2.,FunktionerModul1.pdf,definition
+"4.19. Halvplanet { (x, y) : x + y > -1 }","a) Halvplanet { (x, y) : x + y > -1 }",FunktionerModul1.pdf,definition
+"4.20. Definitionsm¨ angden ¨ ar hela R 2, v¨ ardem¨ angden ¨ ar alla tal som ¨ ar st¨ orre ¨ an eller lika med -1. Niv˚ akurvorna ¨ ar cirklar runt origo i xy-planet. Grafen ¨ ar en paraboloid (sk˚ alliknande).",c) Niv˚ akurvorna ¨ ar cirklar runt origo i xy-planet.,FunktionerModul1.pdf,definition
+4.21. Niv˚ akurvorna ¨ ar r¨ ata linjer i xy-planet.,a) Niv˚ akurvorna ¨ ar r¨ ata linjer i xy-planet.,FunktionerModul1.pdf,definition
+4.22. a) 1. b) 1. c) 0. d) Existerar inte. e) 1. Tips f¨ or b) och e): kom ih˚ ag standardgr¨ ansv¨ arden fr˚ an envarre.,c) Niv˚ aytorna ¨ ar ellipsoider runt origo i xyz-rymden.,FunktionerModul1.pdf,definition
+4.24. Exakt samma svar som i uppgift 4.19.,1 Eftersom detta ¨ ar funktioner som ges av element¨ ara uttryck s˚ a ¨ ar de kontinuerliga ¨ overallt d¨ ar de ¨ ar definierade.,FunktionerModul1.pdf,definition
+Denna fr˚anvandelse av en varande gr¨ an som är en paraboloid är,existerar inte.,FunktionerModul1.pdf,concept
+Här är en specifik fr˚anvandelse av en varande gr¨ an som är en paraboloid:,"Halvplanet { (x, y) : x + y > -1}",FunktionerModul1.pdf,concept
+Här är en specifik fr˚anvandelse av en varande gr¨ an som är en paraboloid:,"Stripen { (x, y) : -3 ≤ y ≤ 1}",FunktionerModul1.pdf,concept
+Här är en specifik fr˚anvandelse av en varande gr¨ an som är en paraboloid:,Grafen är en paraboloid (skolorande alliknande).,FunktionerModul1.pdf,concept
+What is the focus of chapter 10.6?,Cylindrical and spherical coordinates,FunktionerModul1.pdf,concept
+What is important in section 10.1?,"Topological concepts: surrounding, inner and outer points, boundary points, open and closed sets",FunktionerModul1.pdf,concept
+What are two common interpretations of continuous vector-valued functions of a real variable?,"Either the curve itself, its shape, what it has for tangents at different points, what it has for length.",FunktionerModul1.pdf,concept
+What is the derivative of a vector-valued function of a real variable?,A vector that is a tangent vector to the curve and describes the speed,FunktionerModul1.pdf,concept
+What is the length of this vector?,The speed and it is the integral of the curve's length,FunktionerModul1.pdf,concept
+What is the second derivative?,A vector that describes acceleration when we have a particle moving along the curve,FunktionerModul1.pdf,concept
+What are important concepts in module I?,"Definition, value, graph, gradient, and continuity",FunktionerModul1.pdf,concept
+What are polar coordinates used for?,To describe shapes in R^2,FunktionerModul1.pdf,concept
+What are cylindrical coordinates used for?,To describe shapes in R^3,FunktionerModul1.pdf,concept
+What are spherical coordinates used for?,To describe shapes in R^3,FunktionerModul1.pdf,concept
+What does it mean for a set to be open?,A set is open if every point in the set is also in its interior.,FunktionerModul1.pdf,concept
+What does it mean for a set to be closed?,A set is closed if it contains all its boundary points.,FunktionerModul1.pdf,concept
+What does it mean for a set to be compact?,A set is compact if it is both closed and bounded.,FunktionerModul1.pdf,concept
+What does it mean for a set to be bounded?,A set is bounded if it is contained within a finite region.,FunktionerModul1.pdf,concept
+What does it mean for a set to be disjoint?,A set is disjoint if it has no common elements with another set.,FunktionerModul1.pdf,concept
+What does it mean for a set to be open around a point?,"An open set around a point means an open, unspecified set that includes all points around that point.",FunktionerModul1.pdf,concept
+What does it mean for a set to be compact and open?,A set is compact and open if it is both closed and bounded.,FunktionerModul1.pdf,concept
+What does it mean for a set to be disjoint and open?,A set is disjoint and open if it has no common elements with another set and is open.,FunktionerModul1.pdf,concept
+What does it mean for a vector-valued function to be defined?,A vector-valued function is defined if it assigns a vector to each real number.,FunktionerModul1.pdf,concept
+What does it mean for a vector-valued function to be specified?,A vector-valued function is specified if it assigns a vector to each real number.,FunktionerModul1.pdf,concept
+What is the definition of a curve?,A curve is a set of points in space that can be parameterized by a vector-valued function.,FunktionerModul1.pdf,concept
+What is the orientation of a curve?,The orientation of a curve is the direction in which we traverse the points of the curve.,FunktionerModul1.pdf,concept
+What is a parameterized curve?,A parameterized curve is a curve that can be represented by a vector-valued function.,FunktionerModul1.pdf,concept
+What is the length of a curve?,The length of a curve is the integral of the magnitude of the velocity vector along the curve.,FunktionerModul1.pdf,concept
+What is the curvature of a curve?,The curvature of a curve is the reciprocal of the radius of the osculating circle.,FunktionerModul1.pdf,concept
+What is the tangent line to a curve?,The tangent line to a curve is the line that passes through the point on the curve and has the same direction as the curve at that point.,FunktionerModul1.pdf,concept
+What is the normal vector to a curve?,The normal vector to a curve is the vector perpendicular to the tangent line at a given point on the curve.,FunktionerModul1.pdf,concept
+What is the binormal vector to a curve?,The binormal vector to a curve is the vector perpendicular to both the tangent line and the normal vector at a given point on the curve.,FunktionerModul1.pdf,concept
+What type of curve is the particle moving along?,Ellipskurva,FunktionerModul1.pdf,concept
+What is the speed of the particle at time t = 2?,"Bestäm partikelns hastighet, fart och acceleration vid tidpunkten t = 2.",FunktionerModul1.pdf,concept
+Where does the particle move fastest?,I vilka punkter på kurvan är farten som störst?,FunktionerModul1.pdf,concept
+What is the maximum speed of the particle?,Bestäm den största farten.,FunktionerModul1.pdf,concept
+"How do you know that the point (2, 4, 4) lies on the curve?","Hur vet man att punkten (2, 4, 4) ligger på kurvan?",FunktionerModul1.pdf,concept
+"Find a parameter representation of the tangent line to the curve at the point (2, 4, 4).","Bestäm en parameterframställning av tangentlinjen till kurvan i punkten (2, 4, 4).",FunktionerModul1.pdf,concept
+"Verify that the point (1, 0, 1) lies on the spiral curve.","Verifiera att punkten (1, 0, 1) ligger på spiralkurvan.",FunktionerModul1.pdf,concept
+"Find the length of the part of the spiral curve that lies between the points (-2, 4, 4) and (2, 4, 4).","Bestäm längden av den del av spiralkurvan som ligger mellan punkten (-2, 4, 4) och (2, 4, 4).",FunktionerModul1.pdf,concept
+What is the speed of the particle at time t = 1?,"Bestäm partikelns hastighet, fart och acceleration i tidpunkten t = 1.",FunktionerModul1.pdf,concept
+"Find the length of the part of the curve that lies between the points (-2, 4, 4) and (2, 4, 4).","Bestäm en integral som ger längden av den del av kurvan som ligger mellan punkten (-2, 4, 4) och (2, 4, 4).",FunktionerModul1.pdf,concept
+"Verify that the point (1, 0, 1) lies on the curve.","Verifiera att punkten (1, 0, 1) ligger på kurvan.",FunktionerModul1.pdf,concept
+"Find the tangent vector to the curve at the point (1, 0, 1).","Bestäm en tangentvektor till kurvan i punkten (1, 0, 1).",FunktionerModul1.pdf,concept
+"Find a parameter representation of the tangent line to the curve at the point (1, 0, 1).","Bestäm en parametrisering av tangentlinjen till kurvan i punkten (1, 0, 1).",FunktionerModul1.pdf,concept
+"Find the length of the part of the curve that lies between the points (0, 0, 0) and (1, 0, 1).","Bestäm längden av den del av kurvan som ligger mellan punkten (0, 0, 0) och (1, 0, 1).",FunktionerModul1.pdf,concept
+nktioner kontinuerliga?,,FunktionerModul1.pdf,concept
+"Rektangul¨ ara koordinater: x 2 + y 2 ≤ 9, x -y ≥ 3",,FunktionerModul1.pdf,concept
+"Pol¨ ara koordinater: 3 π/ 2 ≤ θ ≤ 2 π , 3 cos θ -sin θ ≤ r ≤ 3",,FunktionerModul1.pdf,concept
+Rektangul¨ ara koordinater: x 2 +( y -2) 2 ≤ 4,,FunktionerModul1.pdf,concept
+"Pol¨ ara koordinater: 0 ≤ θ ≤ π , 0 ≤ r ≤ 4 sin θ",,FunktionerModul1.pdf,concept
+"1 ≤ r ≤ √ 3 , π/ 4 &lt; θ &lt; 3 π/ 4.",,FunktionerModul1.pdf,concept
+"I ( r, z )-planet:",,FunktionerModul1.pdf,concept
+"Rymdpol¨ ara koordinater: 0 ≤ r ≤ a , 0 ≤ ϕ ≤ π/ 2, π ≤ θ ≤ 2 π",,FunktionerModul1.pdf,concept
+"0 &lt; r &lt; 3 , 0 &lt; ϕ &lt; π/ 2 , 0 &lt; θ &lt; π",,FunktionerModul1.pdf,concept
+"L˚ at P = ( a, b ) vara en punkt ej med i m¨ angden C 1 .",,FunktionerModul1.pdf,concept
+"M¨ angden ¨ ar sluten av samma sk¨ al som uppgiften a), och ryms i l˚ adan d¨ ar | x | ≤ 5 och | y | ≤ 5.",,FunktionerModul1.pdf,concept
+M¨ angden ¨ ar begr¨ ansad men ej sluten.,,FunktionerModul1.pdf,concept
+"Randpunkterna ¨ ar m¨ angden { ( x, y ) | x 2 = y } .",,FunktionerModul1.pdf,concept
+"What is the set of half-planes {(x, y) : x + y > -1}?",Halvplanet.,FunktionerModul1.pdf,definition
+"What is the set of strips {(x, y) : -3 ≤ y ≤ 1}?",Stripen.,FunktionerModul1.pdf,definition
+What is the shape of the level curves?,Cirklar runt origo i xy-planet.,FunktionerModul1.pdf,definition
+What is the type of the level curves?,R¨ ata linjer i xy-planet.,FunktionerModul1.pdf,definition
+What is the type of the level curves?,Ellipsoider runt origo i xyz-rymden.,FunktionerModul1.pdf,definition
