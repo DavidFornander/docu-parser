@@ -1,11 +1,12 @@
 .venv/
 __pycache__/
 *.db
-input/*
-output/*
-assets/*
-!input/.gitkeep
-!output/.gitkeep
-!assets/.gitkeep
 .DS_Store
 *.pyc
+.env
+
+# Data directory
+data/*
+!data/assets/.gitkeep
+!data/input/.gitkeep
+!data/output/.gitkeep
