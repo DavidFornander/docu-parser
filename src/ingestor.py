@@ -56,13 +56,11 @@ def main():
     # 1. Scan and Register new PDFs
     raw_pdfs = list(INPUT_DIR.glob("*.pdf"))
     for pdf in raw_pdfs:
-        db.add_document_to_library(pdf.name)
-        # For simplicity in 'run.sh' flow, we move LIBRARY files to PROCESSING
-        # In a real UI, this would be triggered by a 'Process' button.
-        db.update_document_status(pdf.name, 'PROCESSING')
+        db.add_document_to_library(pdf.name, target_notebook)
+        db.update_document_status(pdf.name, 'PROCESSING', target_notebook)
 
     # 2. Get files to process
-    pdfs_to_process = db.get_documents_by_status('PROCESSING')
+    pdfs_to_process = db.get_documents_by_status('PROCESSING', target_notebook)
     
     if not pdfs_to_process:
         logger.warning("No files in 'PROCESSING' state found in DB or input folder.")
@@ -107,14 +105,15 @@ def main():
                     db.insert_chunk(
                         chunk_id=chunk["chunk_id"],
                         source_text=chunk["content"],
-                        metadata=chunk["metadata"]
+                        metadata=chunk["metadata"],
+                        notebook=target_notebook,
+                        filename=pdf.name
                     )
                     progress.advance(chunk_task)
                 
                 progress.remove_task(chunk_task)
                 
-                # MARK AS COMPLETED in documents table
-                db.update_document_status(pdf.name, 'COMPLETED')
+                db.update_document_status(pdf.name, 'COMPLETED', target_notebook)
                 
                 logger.info(f"Finished processing [bold green]{pdf.name}[/]")
 

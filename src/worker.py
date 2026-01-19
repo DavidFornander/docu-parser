@@ -17,6 +17,8 @@ from config import settings
 
 logger = setup_logger("Worker", log_file=settings.logs_dir / "worker.log")
 
+target_notebook = os.environ.get("TARGET_NOTEBOOK")
+
 class TimeoutException(Exception):
     pass
 
@@ -50,7 +52,7 @@ class StudyWorker:
         if not self.generator:
             self.initialize_engine()
 
-        initial_count = self.db.get_pending_count()
+        initial_count = self.db.get_pending_count(target_notebook)
         logger.info(f"Worker loop started. [bold cyan]{initial_count}[/] jobs pending.")
         
         from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
@@ -68,7 +70,7 @@ class StudyWorker:
             
             idle_count = 0
             while True:
-                job = self.db.get_pending_chunk()
+                job = self.db.get_pending_chunk(target_notebook)
                 
                 if job:
                     idle_count = 0
@@ -107,16 +109,17 @@ class StudyWorker:
                             chunk_id=chunk_id,
                             status='COMPLETED',
                             output_json=json.dumps({"flashcards": cards}),
-                            verification_score=score
+                            verification_score=score,
+                            notebook=target_notebook
                         )
                         logger.info(f"[{chunk_id}] Completed. [bold green]{len(cards)}[/] cards.")
 
                     except TimeoutException:
                         logger.error(f"Timed out: {chunk_id}")
-                        self.db.update_chunk_status(chunk_id=chunk_id, status='FAILED', error_log="Timeout")
+                        self.db.update_chunk_status(chunk_id=chunk_id, status='FAILED', error_log="Timeout", notebook=target_notebook)
                     except Exception as e:
                         logger.error(f"Error: {e}")
-                        self.db.update_chunk_status(chunk_id=chunk_id, status='FAILED', error_log=str(e))
+                        self.db.update_chunk_status(chunk_id=chunk_id, status='FAILED', error_log=str(e), notebook=target_notebook)
                     finally:
                         signal.alarm(0)
                     

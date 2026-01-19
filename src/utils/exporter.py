@@ -16,20 +16,25 @@ class CSVExporter:
         
         base_out = Path(output_dir) if output_dir else settings.output_dir
 
-        # Notebook Override
         target_notebook = os.environ.get("TARGET_NOTEBOOK")
         if target_notebook:
             self.output_dir = base_out / target_notebook
+            self.target_notebook = target_notebook
             logger.info(f"Targeting notebook output: {self.output_dir}")
         else:
             self.output_dir = base_out
+            self.target_notebook = None
             
         self.output_dir.mkdir(exist_ok=True, parents=True)
 
     def export_all(self):
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-        cursor.execute("SELECT output_json, metadata FROM processing_queue WHERE status = 'COMPLETED'")
+        
+        if self.target_notebook:
+            cursor.execute("SELECT output_json, metadata FROM processing_queue WHERE notebook = ? AND status = 'COMPLETED'", (self.target_notebook,))
+        else:
+            cursor.execute("SELECT output_json, metadata FROM processing_queue WHERE status = 'COMPLETED'")
         
         rows = cursor.fetchall()
         if not rows:

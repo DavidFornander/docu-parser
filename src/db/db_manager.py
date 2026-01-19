@@ -13,7 +13,7 @@ class DBManager:
         conn.execute("PRAGMA journal_mode=WAL")
         return conn
 
-    def insert_chunk(self, chunk_id, source_text, metadata):
+    def insert_chunk(self, chunk_id, source_text, metadata, notebook, filename):
         """
         Inserts a new chunk into the processing_queue.
         """
@@ -21,21 +21,21 @@ class DBManager:
         cursor = conn.cursor()
         try:
             cursor.execute("""
-                INSERT INTO processing_queue (chunk_id, source_text, metadata, status)
-                VALUES (?, ?, ?, 'PENDING')
+                INSERT INTO processing_queue (chunk_id, notebook, filename, source_text, metadata, status)
+                VALUES (?, ?, ?, ?, ?, 'PENDING')
                 ON CONFLICT(chunk_id) DO UPDATE SET
                     source_text=excluded.source_text,
                     metadata=excluded.metadata,
                     status='PENDING',
                     updated_at=CURRENT_TIMESTAMP
-            """, (chunk_id, source_text, json.dumps(metadata)))
+            """, (chunk_id, notebook, filename, source_text, json.dumps(metadata)))
             conn.commit()
         except sqlite3.Error as e:
             print(f"Database error: {e}")
         finally:
             conn.close()
 
-    def get_pending_chunk(self):
+    def get_pending_chunk(self, notebook):
         """
         Fetches the next PENDING chunk and marks it as PROCESSING.
         (Peek-Lock-Process logic)
@@ -43,17 +43,16 @@ class DBManager:
         conn = self._get_connection()
         cursor = conn.cursor()
         try:
-            # Atomic update to lock the chunk
             cursor.execute("""
                 UPDATE processing_queue 
                 SET status = 'PROCESSING', updated_at = CURRENT_TIMESTAMP
                 WHERE chunk_id = (
                     SELECT chunk_id FROM processing_queue 
-                    WHERE status = 'PENDING' 
+                    WHERE notebook = ? AND status = 'PENDING' 
                     ORDER BY created_at ASC LIMIT 1
                 )
                 RETURNING chunk_id, source_text, metadata
-            """)
+            """, (notebook,))
             row = cursor.fetchone()
             conn.commit()
             if row:
@@ -65,14 +64,14 @@ class DBManager:
         finally:
             conn.close()
 
-    def get_pending_count(self):
+    def get_pending_count(self, notebook):
         """
         Returns the number of chunks currently in PENDING state.
         """
         conn = self._get_connection()
         cursor = conn.cursor()
         try:
-            cursor.execute("SELECT COUNT(*) FROM processing_queue WHERE status = 'PENDING'")
+            cursor.execute("SELECT COUNT(*) FROM processing_queue WHERE notebook = ? AND status = 'PENDING'", (notebook,))
             count = cursor.fetchone()[0]
             return count
         except sqlite3.Error as e:
@@ -81,7 +80,7 @@ class DBManager:
         finally:
             conn.close()
 
-    def update_chunk_status(self, chunk_id, status, output_json=None, error_log=None, verification_score=None):
+    def update_chunk_status(self, chunk_id, status, output_json=None, error_log=None, verification_score=None, notebook=None):
         conn = self._get_connection()
         cursor = conn.cursor()
         try:
@@ -96,39 +95,39 @@ class DBManager:
         finally:
             conn.close()
 
-    def add_document_to_library(self, filename):
+    def add_document_to_library(self, filename, notebook):
         conn = self._get_connection()
         cursor = conn.cursor()
         try:
-            cursor.execute("INSERT OR IGNORE INTO documents (filename, status) VALUES (?, 'LIBRARY')", (filename,))
+            cursor.execute("INSERT OR IGNORE INTO documents (notebook, filename, status) VALUES (?, ?, 'LIBRARY')", (notebook, filename))
             conn.commit()
         finally:
             conn.close()
 
-    def get_documents_by_status(self, status):
+    def get_documents_by_status(self, status, notebook):
         conn = self._get_connection()
         cursor = conn.cursor()
         try:
-            cursor.execute("SELECT filename FROM documents WHERE status = ?", (status,))
+            cursor.execute("SELECT filename FROM documents WHERE notebook = ? AND status = ?", (notebook, status))
             return [row[0] for row in cursor.fetchall()]
         finally:
             conn.close()
 
-    def get_document_status(self, filename):
+    def get_document_status(self, filename, notebook):
         conn = self._get_connection()
         cursor = conn.cursor()
         try:
-            cursor.execute("SELECT status FROM documents WHERE filename = ?", (filename,))
+            cursor.execute("SELECT status FROM documents WHERE notebook = ? AND filename = ?", (notebook, filename))
             row = cursor.fetchone()
             return row[0] if row else None
         finally:
             conn.close()
 
-    def update_document_status(self, filename, status):
+    def update_document_status(self, filename, status, notebook):
         conn = self._get_connection()
         cursor = conn.cursor()
         try:
-            cursor.execute("UPDATE documents SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE filename = ?", (status, filename))
+            cursor.execute("UPDATE documents SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE notebook = ? AND filename = ?", (status, notebook, filename))
             conn.commit()
         finally:
             conn.close()
