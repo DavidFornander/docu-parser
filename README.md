@@ -21,7 +21,7 @@ Summarization is lossy. In high-stakes learning (medical, engineering, law), omi
 ### Primary Entry Point: Web UI
 The recommended way to use the engine is via the Web Manager:
 ```bash
-./start_ui.sh
+./zero_ui.sh
 ```
 *   **Purpose:** Manages notebooks, uploads, pipeline execution, and monitoring.
 *   **Access:** `http://localhost:8000`
@@ -30,7 +30,7 @@ The recommended way to use the engine is via the Web Manager:
 ### CLI Entry Point: Automated Pipeline
 If you want to process everything in one shot via terminal:
 ```bash
-./run.sh
+./zero_run.sh
 ```
 *   **Purpose:** Sequentially runs Ingestion -> Worker -> Export for all notebooks.
 *   **Usage:** Best for headless servers or automation.
@@ -38,7 +38,7 @@ If you want to process everything in one shot via terminal:
 ### Developer Tool: Sandbox Environment
 For developers using Podman/Docker:
 ```bash
-./enter_sandbox.sh
+./zero_sandbox.sh
 ```
 *   **Purpose:** Builds and enters a GPU-enabled container environment.
 *   **Features:** Handles NVIDIA GPU passthrough and permission mapping.
