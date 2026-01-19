@@ -1,7 +1,8 @@
 import sqlite3
 import os
+from config import settings
 
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "study_engine.db")
+DB_PATH = settings.db_path
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS processing_queue (

@@ -7,7 +7,7 @@ export PYTHONPATH=$PYTHONPATH:$(pwd)/src
 echo "🚀 Starting Zero-Loss Learning Engine Pipeline..."
 
 # 1. Initialize Database
-if [ ! -f "study_engine.db" ]; then
+if [ ! -f "data/zeroloss.db" ]; then
     echo "📦 Initializing Database..."
     python3 src/db/init_db.py
 else
