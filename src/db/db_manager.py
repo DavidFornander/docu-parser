@@ -80,6 +80,26 @@ class DBManager:
         finally:
             conn.close()
 
+    def get_all_pending_chunks(self, notebook):
+        """
+        Returns all chunks currently in PENDING state.
+        """
+        conn = self._get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("""
+                SELECT chunk_id, source_text, metadata 
+                FROM processing_queue 
+                WHERE notebook = ? AND status = 'PENDING'
+            """, (notebook,))
+            rows = cursor.fetchall()
+            return [{"chunk_id": row[0], "source_text": row[1], "metadata": json.loads(row[2])} for row in rows]
+        except sqlite3.Error as e:
+            print(f"Database error: {e}")
+            return []
+        finally:
+            conn.close()
+
     def update_chunk_status(self, chunk_id, status, output_json=None, error_log=None, verification_score=None, notebook=None):
         conn = self._get_connection()
         cursor = conn.cursor()
