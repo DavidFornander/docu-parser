@@ -12,8 +12,16 @@ logger = setup_logger("CSVExporter")
 class CSVExporter:
     def __init__(self, db_path="study_engine.db", output_dir="output"):
         self.db_path = db_path
-        self.output_dir = Path(output_dir)
-        self.output_dir.mkdir(exist_ok=True)
+        
+        # Notebook Override
+        target_notebook = os.environ.get("TARGET_NOTEBOOK")
+        if target_notebook:
+            self.output_dir = Path(output_dir) / target_notebook
+            logger.info(f"Targeting notebook output: {self.output_dir}")
+        else:
+            self.output_dir = Path(output_dir)
+            
+        self.output_dir.mkdir(exist_ok=True, parents=True)
 
     def export_all(self):
         conn = sqlite3.connect(self.db_path)

@@ -4,7 +4,7 @@ import aiofiles
 import subprocess
 import asyncio
 from pathlib import Path
-from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks
+from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks, Form
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from typing import List, Optional
@@ -23,14 +23,20 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 class PipelineRequest(BaseModel):
     model_name: str
+    notebook: Optional[str] = None
 
-async def run_pipeline_task(model_name: str):
+class NotebookRequest(BaseModel):
+    name: str
+
+async def run_pipeline_task(model_name: str, notebook: Optional[str] = None):
     """
     Runs the pipeline steps sequentially in the background.
     """
     env = os.environ.copy()
     env["PYTHONPATH"] = f"{env.get('PYTHONPATH', '')}:{BASE_DIR}/src"
     env["MODEL_NAME"] = model_name
+    if notebook:
+        env["TARGET_NOTEBOOK"] = notebook
     
     # We log to a specific file so the user can potentially see it (not implemented in UI yet)
     # or just to the standard logs.
@@ -64,8 +70,8 @@ async def run_pipeline_task(model_name: str):
 
 @app.post("/api/run")
 async def run_pipeline(request: PipelineRequest, background_tasks: BackgroundTasks):
-    background_tasks.add_task(run_pipeline_task, request.model_name)
-    return {"status": "started", "model": request.model_name}
+    background_tasks.add_task(run_pipeline_task, request.model_name, request.notebook)
+    return {"status": "started", "model": request.model_name, "notebook": request.notebook}
 
 @app.get("/api/logs/content/{filename}")
 async def get_log_content(filename: str):
@@ -137,34 +143,88 @@ async def read_root():
         content = await f.read()
     return content
 
+@app.post("/api/notebooks")
+async def create_notebook(request: NotebookRequest):
+    """Creates a new notebook (subfolder) in the input directory."""
+    notebook_path = INPUT_DIR / request.name
+    try:
+        if notebook_path.exists():
+             raise HTTPException(status_code=400, detail="Notebook already exists")
+        notebook_path.mkdir(parents=True)
+        return {"status": "created", "name": request.name}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/api/notebooks/{name}")
+async def delete_notebook(name: str):
+    """Deletes a notebook (subfolder) and its contents."""
+    notebook_path = INPUT_DIR / name
+    
+    # Security check
+    try:
+        notebook_path.resolve().relative_to(INPUT_DIR.resolve())
+    except ValueError:
+         raise HTTPException(status_code=403, detail="Access denied")
+
+    if not notebook_path.exists():
+        raise HTTPException(status_code=404, detail="Notebook not found")
+        
+    try:
+        shutil.rmtree(notebook_path)
+        return {"status": "deleted", "name": name}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/api/files/{location}")
-async def list_files(location: str):
-    """List files in input, output, or logs."""
+async def list_files(location: str, notebook: Optional[str] = None):
+    """List files in input, output, logs, or list notebooks."""
+    if location == "notebooks":
+        # List subdirectories in input
+        dirs = []
+        for path in INPUT_DIR.iterdir():
+            if path.is_dir() and not path.name.startswith("."):
+                dirs.append({
+                    "name": path.name,
+                    "modified": path.stat().st_mtime
+                })
+        dirs.sort(key=lambda x: x['name']) # Sort alphabetically
+        return dirs
+
     if location == "input":
         target_dir = INPUT_DIR
+        if notebook:
+            target_dir = INPUT_DIR / notebook
     elif location == "output":
         target_dir = OUTPUT_DIR
+        if notebook:
+            target_dir = OUTPUT_DIR / notebook
     elif location == "logs":
         target_dir = LOGS_DIR
     else:
         raise HTTPException(status_code=400, detail="Invalid location")
     
+    # If notebook dir doesn't exist yet, return empty
+    if not target_dir.exists():
+        return []
+        
     files = []
-    # Walk for output to handle nested folders (e.g. from chunks)
-    # For simplicity, we'll just do top-level or depth=1 for now, 
-    # but recursive glob is better for output.
     
+    # For output, we might still want recursive search if there are subfolders like 'chunks'
+    # But usually CSVs are at the top of the notebook output folder.
     if location == "output":
-         # Find all files recursively
          for path in target_dir.rglob("*"):
              if path.is_file() and not path.name.startswith("."):
-                 rel_path = path.relative_to(target_dir)
-                 files.append({
-                     "name": str(rel_path),
-                     "size": path.stat().st_size,
-                     "modified": path.stat().st_mtime
-                 })
+                 try:
+                    rel_path = path.relative_to(target_dir)
+                    files.append({
+                        "name": str(rel_path),
+                        "size": path.stat().st_size,
+                        "modified": path.stat().st_mtime
+                    })
+                 except ValueError:
+                     continue
     else:
+        # For input/logs, list direct files
         for path in target_dir.iterdir():
             if path.is_file() and not path.name.startswith("."):
                 files.append({
@@ -178,8 +238,14 @@ async def list_files(location: str):
     return files
 
 @app.post("/api/upload")
-async def upload_file(file: UploadFile = File(...)):
-    destination = INPUT_DIR / file.filename
+async def upload_file(file: UploadFile = File(...), notebook: Optional[str] = Form(None)):
+    if notebook:
+        destination_dir = INPUT_DIR / notebook
+        destination_dir.mkdir(exist_ok=True)
+        destination = destination_dir / file.filename
+    else:
+        destination = INPUT_DIR / file.filename
+        
     try:
         async with aiofiles.open(destination, 'wb') as out_file:
             content = await file.read()
@@ -189,11 +255,11 @@ async def upload_file(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/download/{location}/{filepath:path}")
-async def download_file(location: str, filepath: str):
+async def download_file(location: str, filepath: str, notebook: Optional[str] = None):
     if location == "input":
-        base = INPUT_DIR
+        base = INPUT_DIR / notebook if notebook else INPUT_DIR
     elif location == "output":
-        base = OUTPUT_DIR
+        base = OUTPUT_DIR / notebook if notebook else OUTPUT_DIR
     elif location == "logs":
         base = LOGS_DIR
     else:
@@ -206,11 +272,11 @@ async def download_file(location: str, filepath: str):
     return FileResponse(file_path, filename=file_path.name)
 
 @app.delete("/api/delete/{location}/{filepath:path}")
-async def delete_file(location: str, filepath: str):
+async def delete_file(location: str, filepath: str, notebook: Optional[str] = None):
     if location == "input":
-        base = INPUT_DIR
+        base = INPUT_DIR / notebook if notebook else INPUT_DIR
     elif location == "output":
-        base = OUTPUT_DIR
+        base = OUTPUT_DIR / notebook if notebook else OUTPUT_DIR
     else:
         raise HTTPException(status_code=400, detail="Invalid location (cannot delete logs)")
     
@@ -218,7 +284,9 @@ async def delete_file(location: str, filepath: str):
     
     # Security check: prevent directory traversal
     try:
-        file_path.resolve().relative_to(base.resolve())
+        # Resolve base properly
+        resolved_base = (INPUT_DIR if location == "input" else OUTPUT_DIR).resolve()
+        file_path.resolve().relative_to(resolved_base)
     except ValueError:
          raise HTTPException(status_code=403, detail="Access denied")
 
@@ -235,14 +303,17 @@ async def delete_file(location: str, filepath: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.delete("/api/delete_all/{location}")
-async def delete_all_files(location: str):
+async def delete_all_files(location: str, notebook: Optional[str] = None):
     if location == "input":
-        target_dir = INPUT_DIR
+        target_dir = INPUT_DIR / notebook if notebook else INPUT_DIR
     elif location == "output":
-        target_dir = OUTPUT_DIR
+        target_dir = OUTPUT_DIR / notebook if notebook else OUTPUT_DIR
     else:
         raise HTTPException(status_code=400, detail="Invalid location")
     
+    if not target_dir.exists():
+         return {"status": "cleared", "location": location}
+
     try:
         for item in target_dir.iterdir():
             if item.name == ".gitkeep":

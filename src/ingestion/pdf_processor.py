@@ -11,7 +11,15 @@ logger = setup_logger("PDFProcessor")
 class PDFProcessor:
     def __init__(self, input_dir="input", output_dir="output", assets_dir="assets"):
         self.input_dir = Path(input_dir)
-        self.output_dir = Path(output_dir)
+        
+        # Notebook Override
+        target_notebook = os.environ.get("TARGET_NOTEBOOK")
+        if target_notebook:
+            self.output_dir = Path(output_dir) / target_notebook
+            logger.info(f"Targeting notebook output: {self.output_dir}")
+        else:
+            self.output_dir = Path(output_dir)
+        
         self.assets_dir = Path(assets_dir)
         
         self.input_dir.mkdir(exist_ok=True)
