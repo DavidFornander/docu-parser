@@ -47,9 +47,11 @@ class CSVExporter:
                 writer = csv.writer(f)
                 writer.writerow(["Question", "Answer", "Source", "Type"])
                 for card in cards:
+                    front = card.get('front') or card.get('question') or ''
+                    back = card.get('back') or card.get('answer') or ''
                     writer.writerow([
-                        card.get('front', ''),
-                        card.get('back', ''),
+                        front,
+                        back,
                         source_file,
                         card.get('type', 'concept')
                     ])
@@ -63,9 +65,11 @@ class CSVExporter:
             writer.writerow(["Question", "Answer", "Source", "Type"])
             for source_file, cards in source_groups.items():
                 for card in cards:
+                    front = card.get('front') or card.get('question') or ''
+                    back = card.get('back') or card.get('answer') or ''
                     writer.writerow([
-                        card.get('front', ''),
-                        card.get('back', ''),
+                        front,
+                        back,
                         source_file,
                         card.get('type', 'concept')
                     ])

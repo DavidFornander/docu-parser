@@ -113,6 +113,16 @@ class DBManager:
         finally:
             conn.close()
 
+    def get_document_status(self, filename):
+        conn = self._get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("SELECT status FROM documents WHERE filename = ?", (filename,))
+            row = cursor.fetchone()
+            return row[0] if row else None
+        finally:
+            conn.close()
+
     def update_document_status(self, filename, status):
         conn = self._get_connection()
         cursor = conn.cursor()
