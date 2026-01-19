@@ -3,263 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zero-Loss Engine Dashboard</title>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <title>Zero-Loss Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .mono { font-family: 'Fira Code', monospace; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0d1117; }
-        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #484f58; }
-        
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #484f58; }
-        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        .perspective { perspective: 1000px; }
-        .preserve-3d { transform-style: preserve-3d; }
-        .backface-hidden { backface-visibility: hidden; }
-        .rotate-y-180 { transform: rotateY(180deg); }
-        
-        .bg-app { background-color: #0d1117; }
-        .bg-surface { background-color: #161b22; }
-        .border-base { border-color: #30363d; }
+        .drag-active { background-color: #ecfdf5; border-color: #10b981; }
     </style>
 </head>
-<body class="bg-app text-white min-h-screen">
-    <div class="max-w-6xl mx-auto p-6">
+<body class="bg-slate-50 text-slate-900 h-screen flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-2">
+            <i data-lucide="brain-circuit" class="w-6 h-6 text-indigo-600"></i>
+            <h1 class="text-xl font-bold text-slate-800 tracking-tight">Zero-Loss <span class="text-indigo-600 font-medium">Pipeline</span></h1>
+        </div>
+        <div class="text-sm text-slate-500">Local Manager</div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-hidden flex flex-row">
         
-        <!-- Top Nav -->
-        <nav class="flex justify-between items-center mb-8 border-b border-base pb-6">
-            <div class="flex items-center space-x-3">
-                <div class="bg-blue-600 p-2 rounded-lg">
-                    <i data-lucide="brain-circuit" class="w-6 h-6 text-white"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold tracking-tight">Zero-Loss <span class="text-blue-500">Engine</span></h1>
-                    <p class="text-gray-500 text-[10px] uppercase tracking-[0.2em] font-bold">Autonomous Education Pipeline</p>
-                </div>
+        <!-- Input Column -->
+        <section class="flex-1 flex flex-col border-r border-slate-200 bg-white">
+            <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h2 class="font-semibold flex items-center gap-2">
+                    <i data-lucide="file-input" class="w-4 h-4"></i> Input (PDFs)
+                </h2>
+                <span id="input-count" class="text-xs bg-slate-200 px-2 py-0.5 rounded-full text-slate-600">0</span>
             </div>
             
-            <div id="system-status" hx-get="/system_status" hx-trigger="load, every 2s" class="flex items-center space-x-4">
-                <!-- Real-time status will load here -->
+            <!-- Drag Drop Zone -->
+            <div id="drop-zone" class="m-4 border-2 border-dashed border-slate-300 rounded-xl p-8 flex flex-col items-center justify-center text-center transition-colors cursor-pointer hover:bg-slate-50">
+                <i data-lucide="upload-cloud" class="w-8 h-8 text-slate-400 mb-2"></i>
+                <p class="text-sm text-slate-600 font-medium">Drop PDFs here</p>
+                <p class="text-xs text-slate-400 mt-1">or click to browse</p>
+                <input type="file" id="file-input" class="hidden" accept=".pdf" multiple>
+            </div>
+
+            <!-- File List -->
+            <div class="flex-1 overflow-y-auto px-4 pb-4 space-y-2" id="input-list">
+                <!-- Items injected here -->
+            </div>
+        </section>
+
+        <!-- Output Column -->
+        <section class="flex-1 flex flex-col bg-slate-50">
+            <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-white shadow-sm z-10">
+                <h2 class="font-semibold flex items-center gap-2 text-indigo-900">
+                    <i data-lucide="folder-output" class="w-4 h-4"></i> Output (Decks)
+                </h2>
+                <span id="output-count" class="text-xs bg-indigo-100 px-2 py-0.5 rounded-full text-indigo-700">0</span>
             </div>
             
-            <div class="flex items-center space-x-4">
-                <div class="h-8 w-[1px] bg-[#30363d]"></div>
-                <button hx-post="/run/nuke" 
-                        hx-confirm="☢️ NUKE SYSTEM: This will delete ALL PDFs, flashcards, and logs. Are you sure?"
-                        class="text-[10px] bg-red-900/20 text-red-500 border border-red-500/30 px-3 py-1.5 rounded-lg hover:bg-red-600 hover:text-white transition-all uppercase font-bold tracking-widest">
-                    Clear
-                </button>
+            <div class="flex-1 overflow-y-auto p-4 space-y-2" id="output-list">
+                <!-- Output items injected here -->
             </div>
-        </nav>
+        </section>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            <!-- Side Column (4/12) -->
-            <div class="lg:col-span-4 space-y-8">
-                
-                <!-- Upload Section -->
-                <section class="bg-surface p-6 rounded-xl border border-base shadow-2xl">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <i data-lucide="upload-cloud" class="w-4 h-4 text-blue-500"></i>
-                        <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Ingest Courseware</h2>
-                    </div>
-                    <div id="upload-status"></div>
-                    <form id="upload-form" hx-post="/upload" hx-target="#upload-status" hx-encoding="multipart/form-data" class="space-y-4">
-                        <label id="drop-zone" class="flex flex-col items-center justify-center w-full h-32 border-2 border-base border-dashed rounded-xl cursor-pointer hover:bg-[#1c2128] transition-all group">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <p class="mb-2 text-sm text-gray-400 font-semibold text-center px-4 italic group-hover:text-blue-400 transition-colors">Drop PDF here</p>
-                                <p class="text-[10px] text-gray-600 uppercase font-bold tracking-tighter">Maximum 500MB</p>
-                            </div>
-                            <input type="file" name="file" id="file-input" class="hidden" accept=".pdf" />
-                        </label>
-                    </form>
-                </section>
+    </main>
 
-                <!-- Files Section -->
-                <section class="bg-surface p-6 rounded-xl border border-base shadow-2xl">
-                    <div class="flex items-center space-x-2 mb-4">
-                        <i data-lucide="file-text" class="w-4 h-4 text-green-500"></i>
-                        <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Pending Files</h2>
-                    </div>
-                    <div id="files-container" hx-get="/files" hx-trigger="load, every 5s">
-                        <!-- Content loaded by HTMX -->
-                    </div>
-                </section>
-
-                <!-- Engine Config -->
-                <section class="bg-surface p-6 rounded-xl border border-base shadow-2xl">
-                    <div class="flex items-center space-x-2 mb-6">
-                        <i data-lucide="settings-2" class="w-4 h-4 text-purple-500"></i>
-                        <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Engine Mode</h2>
-                    </div>
-                    <form hx-post="/settings/model" hx-target="#model-indicator" class="space-y-3">
-                        <div class="flex items-center p-2 rounded-lg bg-[#0d1117]/40 border border-base hover:border-gray-600 transition-colors">
-                            <input type="radio" id="mode-speed" name="mode" value="speed" class="hidden peer" checked onchange="this.form.dispatchEvent(new Event('submit'))">
-                            <label for="mode-speed" class="flex-grow flex items-center justify-between cursor-pointer peer-checked:text-blue-400">
-                                <span class="text-xs font-bold uppercase tracking-wider pl-2">Speed</span>
-                                <span class="text-[9px] text-gray-600 font-mono pr-2">Qwen 0.5B</span>
-                            </label>
-                        </div>
-                        <div class="flex items-center p-2 rounded-lg bg-[#0d1117]/40 border border-base hover:border-gray-600 transition-colors">
-                            <input type="radio" id="mode-mastery" name="mode" value="mastery" class="hidden peer" onchange="this.form.dispatchEvent(new Event('submit'))">
-                            <label for="mode-mastery" class="flex-grow flex items-center justify-between cursor-pointer peer-checked:text-purple-400">
-                                <span class="text-xs font-bold uppercase tracking-wider pl-2">Mastery</span>
-                                <span class="text-[9px] text-gray-600 font-mono pr-2">Llama3 8B</span>
-                            </label>
-                        </div>
-                        <div id="model-indicator" class="text-center pt-2">
-                            <span class="text-blue-400 font-mono text-[10px] uppercase font-bold tracking-widest">Engine: speed</span>
-                        </div>
-                    </form>
-                </section>
-
-                <!-- Stats Section -->
-                <section class="bg-surface p-6 rounded-xl border border-base shadow-2xl">
-                    <div class="flex items-center space-x-2 mb-6">
-                        <i data-lucide="activity" class="w-4 h-4 text-green-500"></i>
-                        <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Live Metrics</h2>
-                    </div>
-                    <div id="stats-container" hx-get="/stats" hx-trigger="load, every 5s">
-                        <div class="animate-pulse space-y-4">
-                            <div class="h-12 bg-[#1c2128] rounded-lg"></div>
-                            <div class="h-4 bg-[#1c2128] rounded w-1/2"></div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Decks Section -->
-                <section class="bg-surface p-6 rounded-xl border border-base shadow-2xl">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center space-x-2">
-                            <i data-lucide="package" class="w-4 h-4 text-purple-500"></i>
-                            <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Ready Decks</h2>
-                        </div>
-                        <button hx-post="/run/export" hx-target="#export-status" class="text-[10px] bg-purple-900/30 text-purple-400 border border-purple-500/30 px-2 py-1 rounded-lg hover:bg-purple-900/50 transition-colors uppercase font-bold">Generate</button>
-                    </div>
-                    <div id="export-status" class="mb-4"></div>
-                    <div id="export-container" hx-get="/export" hx-trigger="load, every 10s">
-                    </div>
-                </section>
-            </div>
-
-            <!-- Main Column (8/12) -->
-            <div class="lg:col-span-8 space-y-8">
-                
-                <!-- Queue Table -->
-                <section class="bg-surface rounded-xl border border-base shadow-2xl overflow-hidden">
-                    <div class="p-4 border-b border-base bg-[#1c2128] flex justify-between items-center">
-                        <div class="flex items-center space-x-2">
-                            <i data-lucide="list-ordered" class="w-4 h-4 text-blue-400"></i>
-                            <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider">Active Queue</h2>
-                        </div>
-                        <span class="text-[10px] font-mono text-gray-600">POLLING DB EVERY 5S</span>
-                    </div>
-                    <div id="queue-container" hx-get="/queue" hx-trigger="load, every 5s" class="min-h-[200px]">
-                    </div>
-                </section>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Heartbeat Logs -->
-                    <section class="bg-black rounded-xl border border-base shadow-inner overflow-hidden flex flex-col h-[400px]">
-                        <div class="p-3 border-b border-base bg-[#0d1117] flex justify-between items-center">
-                            <h2 class="text-[10px] font-bold text-blue-900 uppercase tracking-widest">System Heartbeat</h2>
-                            <div class="flex space-x-1">
-                                <div class="w-2 h-2 rounded-full bg-red-900/50"></div>
-                                <div class="w-2 h-2 rounded-full bg-yellow-900/50"></div>
-                                <div class="w-2 h-2 rounded-full bg-green-900/50"></div>
-                            </div>
-                        </div>
-                        <div id="logs-container" hx-get="/logs" hx-trigger="load, every 5s" class="p-4 overflow-y-auto flex-grow scroll-smooth custom-scrollbar">
-                        </div>
-                    </section>
-
-                    <!-- Detail Panel -->
-                    <section id="detail-panel" class="bg-surface rounded-xl border border-base shadow-2xl h-[400px] overflow-hidden flex flex-col">
-                        <div class="p-3 border-b border-base bg-[#1c2128] flex items-center space-x-2">
-                            <i data-lucide="eye" class="w-4 h-4 text-gray-500"></i>
-                            <h2 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Chunk Inspection</h2>
-                        </div>
-                        <div id="chunk-details" class="flex-grow">
-                            <div class="flex flex-col items-center justify-center h-full text-gray-600 space-y-2 text-center p-8">
-                                <i data-lucide="mouse-pointer-click" class="w-8 h-8 opacity-20"></i>
-                                <p class="text-xs italic">Select a chunk from the queue to view and edit its generated cards</p>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </div>
-
-        <footer class="mt-12 text-center text-gray-700 text-[9px] uppercase tracking-[0.3em] font-bold">
-            Zero-Loss learning engine &bull; built for 2026 &bull; RTX 5070 status: optimized
-        </footer>
-    </div>
-
-    <!-- Study Modal -->
-    <div id="study-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-        <div class="bg-[#0d1117] w-full max-w-2xl rounded-3xl border border-gray-800 shadow-2xl relative overflow-hidden">
-            <button onclick="document.getElementById('study-modal').classList.add('hidden')" class="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors z-10">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-            <div id="study-modal-content" class="min-h-[500px]">
-                <!-- Card player loaded here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Real Logic for Launch -->
     <script>
-        // Handle Icons
-        document.addEventListener('htmx:afterOnLoad', function(evt) {
-            lucide.createIcons();
-        });
-
-        // Real Drag and Drop
+        lucide.createIcons();
         const dropZone = document.getElementById('drop-zone');
         const fileInput = document.getElementById('file-input');
-        const form = document.getElementById('upload-form');
-
+        
+        // --- Drag & Drop ---
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, preventDefaults, false);
         });
-
-        function preventDefaults (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
+        function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+        
         ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => dropZone.classList.add('bg-blue-900/20', 'border-blue-500'), false);
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-active'), false);
         });
-
         ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => dropZone.classList.remove('bg-blue-900/20', 'border-blue-500'), false);
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-active'), false);
         });
 
         dropZone.addEventListener('drop', handleDrop, false);
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
 
         function handleDrop(e) {
             const dt = e.dataTransfer;
-            const files = dt.files;
-            fileInput.files = files;
-            // Trigger HTMX form submission
-            htmx.trigger("#upload-form", "submit");
+            handleFiles(dt.files);
         }
 
-        fileInput.addEventListener('change', () => {
-            htmx.trigger("#upload-form", "submit");
-        });
+        async function handleFiles(files) {
+            for (let i = 0; i < files.length; i++) {
+                await uploadFile(files[i]);
+            }
+            fetchFiles('input');
+        }
 
-        lucide.createIcons();
+        async function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // Show loading state implicitly by refreshing list after
+            try {
+                await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+            } catch (e) {
+                console.error(e);
+                alert("Upload failed");
+            }
+        }
+
+        // --- Fetching Lists ---
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function createItemHTML(file, type) {
+            const isOutput = type === 'output';
+            const icon = isOutput ? 'package' : 'file-text';
+            const colorClass = isOutput ? 'text-indigo-600 bg-indigo-50' : 'text-slate-600 bg-slate-100';
+            
+            let actionButtons = '';
+            if (isOutput) {
+                 actionButtons = `
+                    <a href="/api/download/output/${file.name}" class="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors" title="Download">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                    </a>
+                 `;
+            }
+            
+            const deleteBtn = `
+                <button onclick="deleteFile('${type}', '${file.name}')" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors" title="Delete">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+            `;
+
+            return `
+                <div class="group flex items-center justify-between p-3 bg-white border border-slate-200 rounded-lg hover:border-indigo-300 hover:shadow-sm transition-all">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <div class="p-2 rounded-lg ${colorClass}">
+                            <i data-lucide="${icon}" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h3 class="text-sm font-medium text-slate-700 truncate" title="${file.name}">${file.name}</h3>
+                            <p class="text-xs text-slate-400">${formatBytes(file.size)}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        ${actionButtons}
+                        ${deleteBtn}
+                    </div>
+                </div>
+            `;
+        }
+
+        async function fetchFiles(type) {
+            const res = await fetch(`/api/files/${type}`);
+            const files = await res.json();
+            
+            document.getElementById(`${type}-count`).innerText = files.length;
+            const container = document.getElementById(`${type}-list`);
+            
+            if (files.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-slate-400 text-sm">No files found</div>`;
+            } else {
+                container.innerHTML = files.map(f => createItemHTML(f, type)).join('');
+                lucide.createIcons();
+            }
+        }
+
+        async function deleteFile(type, name) {
+            if(!confirm(`Delete ${name}?`)) return;
+            await fetch(`/api/delete/${type}/${name}`, { method: 'DELETE' });
+            fetchFiles(type);
+        }
+
+        // --- Init ---
+        fetchFiles('input');
+        fetchFiles('output');
+        
+        // Auto-refresh output every 5s to catch new jobs
+        setInterval(() => fetchFiles('output'), 5000);
+
     </script>
 </body>
 </html>

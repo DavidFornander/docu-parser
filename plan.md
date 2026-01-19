@@ -282,47 +282,17 @@ Scoring: The Cross-Encoder scores the entailment (does the source support the an
 
 Flagging: If the score is low (indicating a contradiction or hallucination), the card is flagged for manual review or regeneration. This automated fact-checking layer provides the "Audit" required to solve the Trust Gap.
 
-7. Operational Workflow: From PDF to Anki Package
+7. Operational Workflow: From PDF to CSV Export
 The following workflow consolidates the architecture into a linear execution path for the user.
-
-Phase 1: Ingestion & Parsing
-User places PDF course materials into the /input folder.
-
-Marker executes, converting PDFs to Markdown and extracting images to /assets.
-
-LLaVA processes /assets, generating textual descriptions for all diagrams/charts.
-
-Python script chunks the text (with overlap and metadata) and populates the SQLite processing_queue.
-
-Phase 2: The Processing Loop
-Script instantiates the vLLM engine (offline mode) and the Embedding model.
-
-Script enters the "Infinite Loop":
-
-Fetches PENDING chunk.
-
-Generates cards via vLLM (with Chain of Density).
-
-Runs Coverage Audit (embeddings).
-
-If coverage < threshold, runs Chain of Verification (correction loop).
-
-Runs Fact Check (Cross-Encoder).
-
-Saves verified cards to SQLite; updates status to COMPLETED.
-
+...
 Phase 3: Aggregation & Export
 Script queries SQLite for all COMPLETED chunks.
 
 JSON Aggregation: Merges all card lists.
 
-Formatting:
+Formatting: Ensures clean text and LaTeX syntax.
 
-Converts standard Markdown math (...) to Anki syntax (\(...\)).
-
-Injects image tags (<img src="...">) matching the extracted assets.
-
-Package Generation: Uses the genanki library to compile the cards and media assets into a single .apkg file.
+Package Generation: Uses the python csv library to compile the cards into a .csv file.
 
 Audit Report: Generates a Coverage_Report.md file listing:
 

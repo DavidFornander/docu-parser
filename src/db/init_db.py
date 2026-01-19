@@ -16,6 +16,12 @@ CREATE TABLE IF NOT EXISTS processing_queue (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS documents (
+    filename TEXT PRIMARY KEY,
+    status TEXT DEFAULT 'LIBRARY', -- LIBRARY, BUFFER, PROCESSING, COMPLETED
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 """
 
 def init_db():
@@ -25,7 +31,7 @@ def init_db():
         # Enable WAL mode for concurrency
         conn.execute("PRAGMA journal_mode=WAL")
         cursor = conn.cursor()
-        cursor.execute(SCHEMA)
+        cursor.executescript(SCHEMA)
         conn.commit()
         print("Database schema initialized successfully.")
     except sqlite3.Error as e:

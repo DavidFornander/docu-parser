@@ -8,7 +8,7 @@ Your goal is to transmute the source text into atomic Question-Answer pairs such
 Rules of Atomicity:
 1. One Fact, One Card: Do not create composite cards testing multiple variables.
 2. Decompose Lists: If a text lists 5 distinct causes, generate 1 card listing them, and 5 separate cards explaining each cause in detail.
-3. Formula Handling: Extract every variable definition, unit, and condition associated with a formula. Use LaTeX format $$...$$ for all math.
+3. Formula Handling: Extract every variable definition, unit, and condition associated with a formula. Use LaTeX delimiters: \\(...\\) for inline and \\[...\\] for block math.
 4. Contextual Independence: Every question must be self-contained. Never use pronouns like 'it' or 'they' without defining the antecedent in the question itself.
 """
 
@@ -24,7 +24,8 @@ Follow the Chain of Density (CoD) sequence before generating the final flashcard
 3. Gap Analysis: Review your extracted list against the source text. Are there any sentences or data points not yet covered?
 4. Generation: Now, generate atomic flashcards for every item identified.
 
-Output the result as a JSON object with the following schema:
+Output the result as a JSON object with the following schema. IMPORTANT: Output ONLY the JSON object. Do not include any introductory text, explanations, or conversational filler.
+
 {{
   "flashcards": [
     {{

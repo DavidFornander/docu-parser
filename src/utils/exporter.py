@@ -2,124 +2,77 @@
 
 import json
 import sqlite3
-import genanki
+import csv
 import os
-import re
 from pathlib import Path
-from tqdm import tqdm
 from utils.logger import setup_logger, console
 
-logger = setup_logger("AnkiExporter")
+logger = setup_logger("CSVExporter")
 
-class AnkiExporter:
+class CSVExporter:
     def __init__(self, db_path="study_engine.db", output_dir="output"):
         self.db_path = db_path
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
-        
-        # Anki Model definition
-        self.model = genanki.Model(
-            1607392319,
-            'Atomic Flashcard Model',
-            fields=[
-                {'name': 'Question'},
-                {'name': 'Answer'},
-                {'name': 'Source'},
-                {'name': 'Type'},
-            ],
-            templates=[
-                {
-                    'name': 'Card 1',
-                    'qfmt': '<div style="font-family: Arial; font-size: 20px; text-align: center; color: #333;">{{Question}}</div>',
-                    'afmt': '{{FrontSide}}<hr id="answer"><div style="font-family: Arial; font-size: 18px; text-align: center;">{{Answer}}</div><br><div style="font-size: 12px; color: gray;">Source: {{Source}} | Type: {{Type}}</div>',
-                },
-            ])
 
-    def export_all(self, deck_name="Study Course"):
-        deck = genanki.Deck(2059400110, deck_name)
-        
+    def export_all(self):
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         cursor.execute("SELECT output_json, metadata FROM processing_queue WHERE status = 'COMPLETED'")
         
-        total_cards = 0
-        all_metadata = []
-        media_files = []
-        
         rows = cursor.fetchall()
-        
-        from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
-        
         if not rows:
             logger.warning("[bold red]No completed cards found to export.[/]")
             conn.close()
             return
 
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            BarColumn(),
-            TaskProgressColumn(),
-            console=console
-        ) as progress:
-            
-            task_id = progress.add_task("Exporting Cards", total=len(rows))
-            
-            for row in rows:
-                cards_data = json.loads(row[0])
-                metadata = json.loads(row[1])
-                all_metadata.append(metadata)
-                
-                # Determine asset folder for this source
-                source_stem = Path(metadata.get('source_file', '')).stem
-                asset_dir = self.output_dir / source_stem / "assets"
-                
-                for card in cards_data.get("flashcards", []):
-                    front = card.get('front', '')
-                    back = card.get('back', '')
-                    
-                    # Scan for media references in HTML (e.g. <img src="image.png">
-                    for text in [front, back]:
-                        found_images = re.findall(r'<img [^>]*src="([^"]+)"', text)
-                        for img_name in found_images:
-                            img_path = asset_dir / img_name
-                            if img_path.exists():
-                                media_files.append(str(img_path))
-                            else:
-                                # Try fallback to global assets
-                                fallback_path = Path("assets") / img_name
-                                if fallback_path.exists():
-                                    media_files.append(str(fallback_path))
+        # Group cards by source file
+        source_groups = {}
+        for row in rows:
+            cards_data = json.loads(row[0])
+            metadata = json.loads(row[1])
+            source_file = metadata.get('source_file', 'Unknown_Source')
+            if source_file not in source_groups:
+                source_groups[source_file] = []
+            source_groups[source_file].extend(cards_data.get("flashcards", []))
 
-                    note = genanki.Note(
-                        model=self.model,
-                        fields=[
-                            front,
-                            back,
-                            metadata.get('source_file', 'Unknown'),
-                            card.get('type', 'concept')
-                        ]
-                    )
-                    deck.add_note(note)
+        total_cards = 0
+        
+        # 1. Export individual CSVs
+        for source_file, cards in source_groups.items():
+            stem = Path(source_file).stem
+            output_file = self.output_dir / f"{stem}_cards.csv"
+            
+            with open(output_file, mode='w', encoding='utf-8', newline='') as f:
+                writer = csv.writer(f)
+                writer.writerow(["Question", "Answer", "Source", "Type"])
+                for card in cards:
+                    writer.writerow([
+                        card.get('front', ''),
+                        card.get('back', ''),
+                        source_file,
+                        card.get('type', 'concept')
+                    ])
                     total_cards += 1
-                
-                progress.advance(task_id)
+            logger.info(f"Exported [bold green]{len(cards)}[/] cards to [bold cyan]{output_file}[/]")
+
+        # 2. Export Master CSV
+        master_file = self.output_dir / "master_study_cards.csv"
+        with open(master_file, mode='w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(["Question", "Answer", "Source", "Type"])
+            for source_file, cards in source_groups.items():
+                for card in cards:
+                    writer.writerow([
+                        card.get('front', ''),
+                        card.get('back', ''),
+                        source_file,
+                        card.get('type', 'concept')
+                    ])
         
         conn.close()
-        
-        if total_cards > 0:
-            output_file = self.output_dir / f"{deck_name.replace(' ', '_')}.apkg"
-            # Deduplicate media files
-            unique_media = list(set(media_files))
-            
-            package = genanki.Package(deck)
-            package.media_files = unique_media
-            package.write_to_file(output_file)
-            
-            logger.info(f"Exported [bold green]{total_cards}[/] cards and [bold yellow]{len(unique_media)}[/] media files to [bold cyan]{output_file}[/]")
-            self.generate_report(all_metadata)
-        else:
-            logger.warning("[bold red]No cards found in completed chunks.[/]")
+        logger.info(f"Master export complete: [bold cyan]{master_file}[/]")
+        self.generate_report([{"source_file": s} for s in source_groups.keys()])
 
     def generate_report(self, metadata_list):
         report_path = self.output_dir / "Coverage_Report.md"
@@ -127,10 +80,12 @@ class AnkiExporter:
             f.write("# Study Engine Coverage Report\n\n")
             f.write(f"Total Sources Processed: {len(metadata_list)}\n\n")
             f.write("## Processed Files\n")
-            for meta in metadata_list:
-                f.write(f"- {meta.get('source_file', 'Unknown')}\n")
+            # Deduplicate filenames
+            unique_files = sorted(list(set(meta.get('source_file', 'Unknown') for meta in metadata_list)))
+            for filename in unique_files:
+                f.write(f"- {filename}\n")
         logger.info(f"Report generated at [bold cyan]{report_path}[/]")
 
 if __name__ == "__main__":
-    exporter = AnkiExporter()
+    exporter = CSVExporter()
     exporter.export_all()

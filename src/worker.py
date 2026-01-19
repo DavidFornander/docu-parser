@@ -12,22 +12,9 @@ from db.db_manager import DBManager
 from inference.generator import FlashcardGenerator
 from inference.prompts import REPAIR_PROMPT_TEMPLATE
 from verification.audit import CoverageAuditor, FactChecker
-from utils.logger import setup_logger, console, heartbeat
+from utils.logger import setup_logger, console
 
-# --- NixOS Triton Monkeypatch ---
-try:
-    # Try to find ptxas dynamically instead of hardcoding
-    ptxas_path = subprocess.check_output(["which", "ptxas"], text=True).strip()
-    os.environ["PATH"] = f"{os.path.dirname(ptxas_path)}:{os.environ['PATH']}"
-    
-    import triton.backends.nvidia.driver
-    triton.backends.nvidia.driver.libcuda_dirs = lambda: ["/run/opengl-driver/lib"]
-except Exception:
-    # Fallback to standard path if which fails
-    pass
-# --------------------------------
-
-logger = setup_logger("Worker")
+logger = setup_logger("Worker", log_file="logs/worker.log")
 
 class TimeoutException(Exception):
     pass
@@ -46,8 +33,12 @@ class StudyWorker:
     def initialize_engine(self):
         logger.info("[bold cyan]Initializing Inference and Verification Engines...[/]")
         try:
-            # We use lower utilization to leave room for embedding models
-            self.generator = FlashcardGenerator(model_name=self.model_name, gpu_memory_utilization=0.5)
+            # Utilization 0.7 leaves room for Embeddings and Cross-Encoders.
+            self.generator = FlashcardGenerator(
+                model_name=self.model_name, 
+                gpu_memory_utilization=0.7,
+                max_model_len=4096
+            )
             self.auditor = CoverageAuditor()
             self.fact_checker = FactChecker()
         except Exception as e:
@@ -55,8 +46,6 @@ class StudyWorker:
             raise
 
     def run(self):
-        heartbeat.start()
-        heartbeat.set_status("Initializing Engine...")
         if not self.generator:
             self.initialize_engine()
 
@@ -77,7 +66,6 @@ class StudyWorker:
             
             idle_count = 0
             while True:
-                heartbeat.set_status("Waiting for jobs...")
                 job = self.db.get_pending_chunk()
                 
                 if job:
@@ -89,17 +77,13 @@ class StudyWorker:
                     signal.alarm(600)
                     try:
                         # 1. Primary Extraction
-                        heartbeat.set_status(f"Extraction: {chunk_id[:8]}...")
-                        start_time = time.time()
                         result = self.generator.generate_cards(text)
                         cards = result.get("flashcards", [])
                         
                         # 2. Coverage Audit (CoV Loop)
-                        heartbeat.set_status(f"Audit: {chunk_id[:8]}...")
                         uncovered, score = self.auditor.audit_coverage(text, cards)
                         
                         if uncovered and score < 0.90:
-                            heartbeat.set_status(f"Repairing: {chunk_id[:8]}...")
                             repair_text = "\n".join(uncovered)
                             repair_prompt = REPAIR_PROMPT_TEMPLATE.format(uncovered_text=repair_text)
                             repair_outputs = self.generator.llm.generate([repair_prompt], self.generator.sampling_params)
@@ -110,9 +94,8 @@ class StudyWorker:
                             score = final_score
 
                         # 3. Fact Check
-                        heartbeat.set_status(f"Fact Check: {chunk_id[:8]}...")
                         verified_cards = []
-                        for card in cards:
+                        for i, card in enumerate(cards):
                             if self.fact_checker.verify_consistency(card) > 0.4:
                                 verified_cards.append(card)
                         cards = verified_cards
@@ -137,13 +120,12 @@ class StudyWorker:
                     
                     progress.advance(task_id)
                 else:
-                    heartbeat.set_status("Idle...")
-                    time.sleep(5)
                     idle_count += 1
-                    if idle_count >= 3:
+                    if idle_count >= 2:
+                        logger.info("Worker shutting down due to inactivity.")
                         break
-        
-        heartbeat.stop()
+                    time.sleep(5)
+
 
 if __name__ == "__main__":
     MODEL = os.getenv("MODEL_NAME", "casperhansen/llama-3-8b-instruct-awq")

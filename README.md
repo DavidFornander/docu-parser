@@ -13,24 +13,21 @@ Summarization is lossy. In high-stakes learning (medical, engineering, law), omi
 ## 🛠 Architecture
 - **Inference**: [vLLM](https://github.com/vllm-project/vllm) for high-throughput local LLM execution (Llama-3-8B).
 - **Vision**: [Moondream2](https://github.com/vikhyat/moondream) for lightweight diagram analysis.
-- **Parsing**: [Marker](https://github.com/vikas-kumar/marker-pdf) for deep-learning-based PDF to Markdown conversion.
+- **Parsing**: [Docling](https://github.com/DS4SD/docling) for robust PDF to Markdown conversion.
 - **State**: SQLite-based job queue for persistent, crash-resilient processing.
 - **Verification**: Sentence-Transformers for semantic coverage auditing and Cross-Encoders for fact-checking.
-- **Export**: Anki-compatible `.apkg` generation.
+- **Export**: Simple CSV generation for easy import into spreadsheets or other tools.
 
-## 📦 Environment Setup (NixOS)
-This project is optimized for NixOS using **Nix Flakes** to provide a patched environment where standard Python AI wheels can run natively.
+## 📦 Environment Setup
 
-1. **Enter the Development Shell**:
-   ```bash
-   nix develop
-   ```
-   *This automatically creates/activates a `.venv` and patches library paths.*
-
-2. **Install Dependencies** (First time only):
+1. **Install Dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
+
+2. **Set up Environment**:
+   Ensure your `PYTHONPATH` includes the `src` directory if running manual scripts.
+
 
 ## 🏃 Usage Flow
 
@@ -60,31 +57,21 @@ python3 src/worker.py
 *Note: Uses `Qwen/Qwen2.5-0.5B-Instruct` by default for high speed and low VRAM usage.*
 
 #### 3. Export
-Generate your Anki deck.
+Generate your CSV files.
 ```bash
 python3 src/utils/exporter.py
 ```
 
-## 📊 Monitoring
-The system logs its exact state every 5 seconds to:
-- **Terminal**: Direct log output.
-- **File**: `logs/system_state.jsonl` (Structured heartbeat).
-
-To monitor the background heartbeat:
-```bash
-tail -f logs/system_state.jsonl
-```
-
 ## 📁 Directory Structure
 - `input/`: Raw PDFs.
-- `output/`: Processed Markdown and Anki decks.
+- `output/`: Processed Markdown and CSV files.
 - `assets/`: Extracted diagrams and images.
-- `logs/`: Heartbeat and system state logs.
+- `logs/`: Pipeline and worker logs.
 - `src/`:
   - `ingestion/`: PDF processing & chunking.
   - `inference/`: vLLM interaction & prompt engineering.
   - `verification/`: Semantic coverage audit.
-  - `db/`: SQLite job queue management.
+  - `db/`: SQLite job queue and system state management.
 
 ## ⚖️ License
 MIT

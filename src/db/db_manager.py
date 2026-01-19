@@ -25,6 +25,7 @@ class DBManager:
                 ON CONFLICT(chunk_id) DO UPDATE SET
                     source_text=excluded.source_text,
                     metadata=excluded.metadata,
+                    status='PENDING',
                     updated_at=CURRENT_TIMESTAMP
             """, (chunk_id, source_text, json.dumps(metadata)))
             conn.commit()
@@ -91,5 +92,32 @@ class DBManager:
             conn.commit()
         except sqlite3.Error as e:
             print(f"Database error: {e}")
+        finally:
+            conn.close()
+
+    def add_document_to_library(self, filename):
+        conn = self._get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("INSERT OR IGNORE INTO documents (filename, status) VALUES (?, 'LIBRARY')", (filename,))
+            conn.commit()
+        finally:
+            conn.close()
+
+    def get_documents_by_status(self, status):
+        conn = self._get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("SELECT filename FROM documents WHERE status = ?", (status,))
+            return [row[0] for row in cursor.fetchall()]
+        finally:
+            conn.close()
+
+    def update_document_status(self, filename, status):
+        conn = self._get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("UPDATE documents SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE filename = ?", (status, filename))
+            conn.commit()
         finally:
             conn.close()

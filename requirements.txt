@@ -1,7 +1,7 @@
 vllm>=0.4.0
 marker-pdf>=0.2.0
+docling
 sentence-transformers>=2.6.0
-genanki>=0.13.0
 torch>=2.2.0
 numpy
 pandas
@@ -16,4 +16,5 @@ einops
 timm
 fastapi
 uvicorn
-jinja2
+python-multipart
+aiofiles
