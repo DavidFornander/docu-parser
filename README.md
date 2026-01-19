@@ -10,6 +10,57 @@ Summarization is lossy. In high-stakes learning (medical, engineering, law), omi
 4. **Verifies Factuality**: Uses NLI (Cross-Encoders) to ensure every flashcard is strictly supported by the source material.
 5. **Repairs Gaps**: Automatically triggers a "Chain of Verification" loop for missing info.
 
+## 📊 System Architecture
+
+```text
+[ SOURCE PDF ]
+      |
+      v
++-----------------------+      +-----------------------+
+|    Docling Parser     |----->|  Layout & Image Extr. |
++-----------------------+      +-----------------------+
+      |                                  |
+      |                                  v
+      |                        +-----------------------+
+      |                        |   moondream2 (VLM)    | --> "Sees" diagrams
+      |                        +-----------------------+
+      v                                  |
++------------------------------------------------------+
+|             Enriched Markdown (Text + Vision)        |
++------------------------------------------------------+
+      |
+      v
++-----------------------+      +-----------------------+
+|   Semantic Chunker    |----->|   SQLite Queue (DB)   |
++-----------------------+      +-----------------------+
+      |                                  |
+      |          [ WORKER LOOP ] <-------+
+      v
++-----------------------+
+|  vLLM (Llama-3/Qwen)  | <--- Primary Atomic Extraction
++-----------------------+
+      |
+      v
++-----------------------+      +-----------------------+
+|  all-MiniLM-L6-v2     |----->|   Coverage Audit?     |
+|  (Embedding Model)    |      | (Score >= 0.90?)      |
++-----------------------+      +-----------+-----------+
+      |                                    |       |
+      |          [ NO: Gaps Found ] <------+       | [ YES ]
+      v                                            |
++-----------------------+                          |
+|  Repair Pass (LLM)    |                          |
++-----------------------+                          |
+      |                                            |
+      v                                            v
++-----------------------+                  +-----------------------+
+|   Cross-Encoder       | <----------------|    Fact Verification  |
+|   (ms-marco-MiniLM)   |                  +-----------------------+
++-----------------------+                          |
+      |                                            v
+      +------------------------------------> [ FINAL CSV DECK ]
+```
+
 ## 🛠 Tech Stack
 - **Inference**: [vLLM](https://github.com/vllm-project/vllm) for high-throughput local LLM execution.
 - **Parsing**: [Docling](https://github.com/DS4SD/docling) for advanced PDF to Markdown conversion.
